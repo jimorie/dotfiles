@@ -1,0 +1,17 @@
+[user]
+	email = jimorie@gmail.com
+	name = Petter Nyström
+[log]
+	decorate = short
+[push]
+	default = simple
+[core]
+    editor = vim
+    autocrlf = input
+    eol = lf
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
+
