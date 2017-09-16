@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/jimorie/Projects/scrollincss'
+let g:netrw_dirhist_2='/home/jimorie/Projects/overflowfit'
+let g:netrw_dirhist_3='/home/jimorie/Projects/tjp-dev/migration'
+let g:netrw_dirhist_4='/etc/apache2/sites-enabled'
