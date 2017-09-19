@@ -1,0 +1,21 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"A File Icon",
+		"AlignTab",
+		"ayu",
+		"Chain of Command",
+		"ColorSchemeEditor",
+		"GitGutter",
+		"LineJumper",
+		"Package Control",
+		"PackageResourceViewer",
+		"Solarized Color Scheme",
+		"Theme - Soda",
+		"Tomorrow Color Schemes"
+	]
+}
