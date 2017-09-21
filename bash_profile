@@ -5,7 +5,7 @@
 PROMPT_COMMAND=prompter
 
 function prompter() {
-    export PS1="\n\[\033[00;32m\]\u@\h\[\033[00;33m\]$(_venv)\[\033[00;36m\]$(_gitbranch) \[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
+    export PS1="\n\[\033[00;32m\]\u@\h$(_venv)\[\033[00;36m\]$(_gitbranch) \[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
 }
 
 function _gitbranch {
@@ -13,7 +13,14 @@ function _gitbranch {
 }
 
 function _venv {
-    if [[ -n $VIRTUAL_ENV ]]; then echo " `basename $VIRTUAL_ENV`"; fi
+    if [[ -n $VIRTUAL_ENV ]]; then
+        venvroot=`dirname $VIRTUAL_ENV`
+        if [[ `pwd` = $venvroot* ]]; then
+            echo "\[\033[00;33m\] `basename $VIRTUAL_ENV`"; 
+        else
+            echo "\[\033[00;31m\] `basename $VIRTUAL_ENV`"; 
+        fi
+    fi
 }
 
 export CLICOLOR=1;
