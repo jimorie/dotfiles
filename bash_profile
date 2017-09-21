@@ -15,7 +15,8 @@ function _gitbranch {
 function _venv {
     if [[ -n $VIRTUAL_ENV ]]; then
         venvroot=`dirname $VIRTUAL_ENV`
-        if [[ `pwd` = $venvroot* ]]; then
+        pwd=`pwd`
+        if [[ "$pwd/" = "$venvroot/"* ]]; then
             echo "\[\033[00;33m\] `basename $VIRTUAL_ENV`"; 
         else
             echo "\[\033[00;31m\] `basename $VIRTUAL_ENV`"; 
