@@ -19,7 +19,13 @@ function _venv {
 export CLICOLOR=1;
 export LSCOLORS=ExGxcxdxCxxxxxxxxxxxxx;
 
-PATH=/usr/local/git/bin:$PATH
+if [ -d "$HOME/bin" ]; then
+    PATH="$HOME/bin":$PATH
+fi
+
+if [ -d "/usr/local/git/bin" ]; then
+    PATH="/usr/local/git/bin":$PATH
+fi
 
 alias ll='ls -l'
 alias la='ls -a'
