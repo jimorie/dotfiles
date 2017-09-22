@@ -5,7 +5,7 @@
 PROMPT_COMMAND=prompter
 
 function prompter() {
-    export PS1="\n\[\033[00;32m\]\u@\h\[\033[00;33m\]$(_venv)\[\033[00;36m\]$(_gitbranch) \[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
+    export PS1="\n\[\033[00;32m\]\u@\h$(_venv)\[\033[00;36m\]$(_gitbranch) \[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
 }
 
 function _gitbranch {
@@ -13,13 +13,27 @@ function _gitbranch {
 }
 
 function _venv {
-    if [[ -n $VIRTUAL_ENV ]]; then echo " `basename $VIRTUAL_ENV`"; fi
+    if [[ -n $VIRTUAL_ENV ]]; then
+        venvroot=`dirname $VIRTUAL_ENV`
+        pwd=`pwd`
+        if [[ "$pwd/" = "$venvroot/"* ]]; then
+            echo "\[\033[00;33m\] `basename $VIRTUAL_ENV`"; 
+        else
+            echo "\[\033[00;31m\] `basename $VIRTUAL_ENV`"; 
+        fi
+    fi
 }
 
 export CLICOLOR=1;
 export LSCOLORS=ExGxcxdxCxxxxxxxxxxxxx;
 
-PATH=/usr/local/git/bin:$PATH
+if [ -d "$HOME/bin" ]; then
+    PATH="$HOME/bin":$PATH
+fi
+
+if [ -d "/usr/local/git/bin" ]; then
+    PATH="/usr/local/git/bin":$PATH
+fi
 
 alias ll='ls -l'
 alias la='ls -a'
@@ -33,9 +47,11 @@ alias gs='git status'
 alias gp='git pull --ff-only'
 
 # Pyenv setup
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-alias py2="pyenv shell 2.7.13;export PATH=$(echo $PATH | sed -e 's/:\/Users\/jimorie\/.pyenv\/versions\/[^:]*//g');export PATH='$PATH:/Users/jimorie/.pyenv/versions/2.7.13/bin'"
-alias py3="pyenv shell 3.4.6;export PATH=$(echo $PATH | sed -e 's/:\/Users\/jimorie\/.pyenv\/versions\/[^:]*//g');export PATH='$PATH:/Users/jimorie/.pyenv/versions/3.4.6/bin'"
+if which pyenv > /dev/null;
+    then eval "$(pyenv init -)";
+    alias py2="pyenv shell 2.7.13;export PATH=$(echo $PATH | sed -e 's/:\/Users\/jimorie\/.pyenv\/versions\/[^:]*//g');export PATH='$PATH:/Users/jimorie/.pyenv/versions/2.7.13/bin'"
+    alias py3="pyenv shell 3.4.6;export PATH=$(echo $PATH | sed -e 's/:\/Users\/jimorie\/.pyenv\/versions\/[^:]*//g');export PATH='$PATH:/Users/jimorie/.pyenv/versions/3.4.6/bin'"
+fi
 
 # Virtualenv setup
 alias venv='source .venv/bin/activate'
