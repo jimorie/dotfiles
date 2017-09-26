@@ -15,8 +15,7 @@ function _gitbranch {
 function _venv {
     if [[ -n $VIRTUAL_ENV ]]; then
         venvroot=`dirname $VIRTUAL_ENV`
-        pwd=`pwd`
-        if [[ "$pwd/" = "$venvroot/"* ]]; then
+        if [[ "$PWD/" = "$venvroot/"* ]]; then
             echo "\[\033[00;33m\] `basename $VIRTUAL_ENV`"; 
         else
             echo "\[\033[00;31m\] `basename $VIRTUAL_ENV`"; 
@@ -56,6 +55,12 @@ fi
 # Virtualenv setup
 alias venv='source .venv/bin/activate'
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+if [[ -n $VIRTUAL_ENV ]]; then
+    if [[ `which python` != "$VIRTUAL_ENV"* ]]; then
+        unset VIRTUAL_ENV
+    fi
+fi
+
 
 # Go setup
 export GOPATH=$HOME/Projects/go
