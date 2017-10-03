@@ -3,3 +3,4 @@
 *.merged-ca-bundle
 *.user-ca-bundle
 *.last-run
+vim/.netrwhist
