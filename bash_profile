@@ -30,13 +30,10 @@ if [ -d "$HOME/bin" ]; then
     PATH="$HOME/bin":$PATH
 fi
 
-if [ -d "/usr/local/git/bin" ]; then
-    PATH="/usr/local/git/bin":$PATH
-fi
-
 alias ll='ls -l'
 alias la='ls -a'
 
+# Git setup
 alias gc='git commit'
 alias gd='git diff'
 alias gf='git fetch'
@@ -44,6 +41,14 @@ alias gg='git grep -n'
 alias gl='git --no-pager log -3'
 alias gs='git status'
 alias gp='git pull --ff-only'
+
+if [ -d "/usr/local/git/bin" ]; then
+    PATH="/usr/local/git/bin":$PATH
+fi
+
+if [ -f ~/.git-completion.bash ]; then
+    . ~/.git-completion.bash
+fi
 
 # Pyenv setup
 if which pyenv > /dev/null;
