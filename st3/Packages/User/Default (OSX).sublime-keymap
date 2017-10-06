@@ -210,7 +210,13 @@
       { "key": "vi_has_input_state" }
     ]
   },
-  { "keys": ["ctrl+c"], "command": "single_selection", "context":
+  { "keys": ["ctrl+c"],
+    "command": "chain",
+    "args":
+    {
+      "commands": [["single_selection"], ["exit_insert_mode"]]
+    },
+    "context":
     [
       { "key": "num_selections", "operator": "not_equal", "operand": 1 }
     ]
