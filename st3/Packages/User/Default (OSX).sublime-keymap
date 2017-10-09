@@ -69,6 +69,7 @@
     "motion": "move",
     "motion_args": {"by": "lines", "forward": false, "extend": true },
     "linewise": true },
+    "context": [{"key": "setting.command_mode"}]
   },
 
   { "keys": ["h", "w"], "command": "set_motion", "args": {
@@ -290,9 +291,30 @@
         ["clear_fields"],
         ["single_selection"],
         ["exit_visual_mode"],
+      ]
+    },
+  },
+  {
+    "keys": ["ctrl+c"],
+    "command": "chain",
+    "args":
+    {
+      "commands": [
+        ["hide_auto_complete"],
+        ["hide_popup"],
+        ["hide_overlay"],
+        ["hide_panel"],
+        ["clear_fields"],
+        ["single_selection"],
+        ["exit_visual_mode"],
         ["exit_insert_mode"]
       ]
     },
+    "context":
+    [
+      { "key": "setting.command_mode", "operand": false },
+      { "key": "setting.is_widget", "operand": false }
+    ]
   },
 
   { "keys": ["enter"], "command": "noop", "context":
