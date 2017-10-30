@@ -46,9 +46,40 @@
     "context": [{"key": "setting.command_mode"}]
   },
 
-  { "keys": ["ctrl+k"], "command": "line_jumper", "args": { "number_of_lines": 10, "cmd": "down" } },
+  {
+    "keys": ["ctrl+k"],
+    "command": "cmd_repeat",
+    "args": {
+      "subcommand": {
+        "command": "set_motion",
+        "args": {
+          "motion": "move",
+          "motion_args": {"by": "lines", "forward": true, "extend": true},
+          "linewise": true
+        },
+      },
+      "repeat": 10
+    },
+    "context": [{"key": "setting.command_mode"}]
+  },
 
-  { "keys": ["ctrl+i"],"command": "line_jumper", "args": { "number_of_lines": 10, "cmd": "up" } },
+  {
+    "keys": ["ctrl+i"],
+    "command": "cmd_repeat",
+    "args": {
+      "subcommand": {
+        "command": "set_motion",
+        "args": {
+          "motion": "move",
+          "motion_args": {"by": "lines", "forward": false, "extend": true},
+          "linewise": true
+        },
+      },
+      "repeat": 10
+    },
+    "context": [{"key": "setting.command_mode"}]
+  },
+
 
   { "keys": ["ctrl+j"], "command": "move", "args": {"by": "subwords", "forward": false},
     "context": [{"key": "setting.command_mode"}, {"key": "setting.vintage_ctrl_keys"}]
@@ -189,7 +220,6 @@
 
   // Escape as ctrl+c
 
-  /*
   { "keys": ["ctrl+c"], "command": "exit_insert_mode",
     "context":
     [
@@ -222,7 +252,7 @@
     "command": "chain",
     "args":
     {
-      "commands": [["single_selection"], ["exit_visual_mode"], ["exit_insert_mode"]]
+      "commands": [["single_selection"], ["exit_visual_mode"]]
     },
     "context":
     [
@@ -265,59 +295,16 @@
     "context":
     [
       {
-        "key": "auto_complete_visible",
-        "operator": "equal",
-        "operand": true
+        "key": "auto_complete_visible"
       }
     ]
   },
-  */
-  { "keys": ["ctrl+c"], "command": "vi_cancel_current_action", "context":
-    [
-      { "key": "setting.command_mode" },
-      { "key": "vi_has_input_state" }
-    ]
-  },
-  {
-    "keys": ["ctrl+c"],
-    "command": "chain",
-    "args":
-    {
-      "commands": [
-        ["hide_auto_complete"],
-        ["hide_popup"],
-        ["hide_overlay"],
-        ["hide_panel"],
-        ["clear_fields"],
-        ["single_selection"],
-        ["exit_visual_mode"],
-      ]
-    },
-  },
-  {
-    "keys": ["ctrl+c"],
-    "command": "chain",
-    "args":
-    {
-      "commands": [
-        ["hide_auto_complete"],
-        ["hide_popup"],
-        ["hide_overlay"],
-        ["hide_panel"],
-        ["clear_fields"],
-        ["single_selection"],
-        ["exit_visual_mode"],
-        ["exit_insert_mode"]
-      ]
+
+  { "keys": ["enter"], "command": "insert",
+    "args": {
+      "characters": "\n"
     },
     "context":
-    [
-      { "key": "setting.command_mode", "operand": false },
-      { "key": "setting.is_widget", "operand": false }
-    ]
-  },
-
-  { "keys": ["enter"], "command": "noop", "context":
     [
       { "key": "auto_complete_visible" },
       { "key": "setting.auto_complete_commit_on_tab", "operand": false }
