@@ -5,6 +5,11 @@
 	"caret_extra_width": 1,
 	"color_scheme": "Packages/Color Scheme - Default/Mariana.tmTheme",
 	"drag_text": false,
+	"file_exclude_patterns":
+	[
+		"._*",
+		"*.pyc"
+	],
 	"folder_exclude_patterns":
 	[
 		".svn",
@@ -13,7 +18,8 @@
 		"CVS",
 		".venv",
 		"build",
-		"__pycache__"
+		"__pycache__",
+		".sass-cache"
 	],
 	"font_size": 12,
 	"highlight_line": true,
