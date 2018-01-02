@@ -1,3 +1,8 @@
+# Locale setup
+
+export LC_ALL=sv_SE.UTF-8
+export LANG=en_US.UTF-8
+
 # Prompt setup
 
 #PS1="\n\[\033[00;32m\]\u@\h\[\033[00;33m\]\$(if [[ -n \$VIRTUAL_ENV ]]\; then echo basename \$VIRTUAL_ENV; else echo " "\; fi)\[\033[00;36m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 1) \[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
