@@ -89,6 +89,22 @@
     "context": [{"key": "setting.command_mode"}, {"key": "setting.vintage_ctrl_keys"}]
   },
 
+  { "keys": ["ctrl+j"], "command": "move", "args": {"by": "words", "forward": false, "extend": true},
+    "context": [
+      {"key": "setting.command_mode"},
+      {"key": "setting.vintage_ctrl_keys"},
+      { "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+    ]
+  },
+
+  { "keys": ["ctrl+l"], "command": "move", "args": {"by": "word_ends", "forward": true, "extend": true},
+    "context": [
+      {"key": "setting.command_mode"},
+      {"key": "setting.vintage_ctrl_keys"},
+      { "key": "selection_empty", "operator": "equal", "operand": false, "match_all": true }
+    ]
+  },
+
   { "keys": ["i"], "command": "set_motion", "args": {
     "motion": "move",
     "motion_args": {"by": "lines", "forward": false, "extend": true },
