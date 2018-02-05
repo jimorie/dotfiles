@@ -5,3 +5,4 @@
 *.last-run
 vim/.netrwhist
 st3/Packages/User/oscrypto-ca-bundle.crt
+*.log
