@@ -1,6 +1,6 @@
 # Locale setup
 
-export LC_ALL=sv_SE.UTF-8
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # Prompt setup
@@ -35,8 +35,9 @@ if [ -d "$HOME/bin" ]; then
     PATH="$HOME/bin":$PATH
 fi
 
-alias ll='ls -l'
-alias la='ls -a'
+alias ll='ls -l --color=auto'
+alias la='ls -a --color=auto'
+alias ls='ls --color=auto'
 
 # Git setup
 alias gc='git commit'
