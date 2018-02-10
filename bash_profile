@@ -35,9 +35,8 @@ if [ -d "$HOME/bin" ]; then
     PATH="$HOME/bin":$PATH
 fi
 
-alias ll='ls -l --color=auto'
-alias la='ls -a --color=auto'
-alias ls='ls --color=auto'
+alias ll='ls -l'
+alias la='ls -a'
 
 # Git setup
 alias gc='git commit'
