@@ -46,6 +46,7 @@ alias gg='git grep -n'
 alias gl='git --no-pager log -3'
 alias gs='git status'
 alias gp='git pull --ff-only'
+alias ga='git add -u'
 
 if [ -d "/usr/local/git/bin" ]; then
     PATH="/usr/local/git/bin":$PATH
