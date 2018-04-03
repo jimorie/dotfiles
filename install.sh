@@ -1,6 +1,9 @@
 rm -i ~/.bash_profile
 ln -s `pwd`/bash_profile ~/.bash_profile
 
+rm -i ~/.bashrc
+ln -s `pwd`/bashrc ~/.bashrc
+
 rm -i ~/.git-completion.bash
 ln -s `pwd`/git-completion.bash ~/.git-completion.bash
 
