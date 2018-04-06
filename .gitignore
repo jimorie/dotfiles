@@ -3,6 +3,7 @@
 *.merged-ca-bundle
 *.user-ca-bundle
 *.last-run
+*.DS_Store
 vim/.netrwhist
 st3/Packages/User/oscrypto-ca-bundle.crt
 *.log
