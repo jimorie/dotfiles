@@ -58,7 +58,7 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 # Pyenv setup
-if which pyenv > /dev/null;
+if which pyenv > /dev/null 2>&1;
     then eval "$(pyenv init -)";
     alias py2="pyenv shell 2.7.13;export PATH=$(echo $PATH | sed -e 's/:\/Users\/jimorie\/.pyenv\/versions\/[^:]*//g');export PATH='$PATH:/Users/jimorie/.pyenv/versions/2.7.13/bin'"
     alias py3="pyenv shell 3.4.6;export PATH=$(echo $PATH | sed -e 's/:\/Users\/jimorie\/.pyenv\/versions\/[^:]*//g');export PATH='$PATH:/Users/jimorie/.pyenv/versions/3.4.6/bin'"
