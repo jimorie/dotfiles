@@ -61,6 +61,7 @@ autocmd FileType cucumber setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=
 "autocmd FileType help NoSpaceHi
 "autocmd BufRead,BufNewFile *php,*.module,*.test setlocal filetype=php
 
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
 
 
 " Status line stuff
