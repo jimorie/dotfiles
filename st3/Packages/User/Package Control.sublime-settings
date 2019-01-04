@@ -13,13 +13,15 @@
 		"Git blame",
 		"GitGutter",
 		"LineJumper",
-		"Markdown Preview",
+		"MarkdownPreview",
 		"Package Control",
 		"PackageResourceViewer",
 		"RPM Spec Syntax",
 		"Sass",
+		"Show Character Code",
 		"Solarized Color Scheme",
 		"Theme - Soda",
-		"Tomorrow Color Schemes"
+		"Tomorrow Color Schemes",
+		"TypeScript"
 	]
 }

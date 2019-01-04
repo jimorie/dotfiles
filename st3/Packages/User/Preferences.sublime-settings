@@ -3,7 +3,7 @@
 	"caret_extra_bottom": 2,
 	"caret_extra_top": 2,
 	"caret_extra_width": 1,
-	"color_scheme": "Packages/Color Scheme - Default/MarianaCustom.tmTheme",
+	"color_scheme": "Packages/Solarized Color Scheme/Solarized (light).sublime-color-scheme",
 	"drag_text": false,
 	"file_exclude_patterns":
 	[
@@ -26,7 +26,7 @@
 		".tox",
 		"*.egg-info"
 	],
-	"font_size": 12,
+	"font_size": 18,
 	"highlight_line": true,
 	"ignored_packages":
 	[
