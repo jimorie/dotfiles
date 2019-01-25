@@ -37,6 +37,7 @@ fi
 
 alias ll='ls -l'
 alias la='ls -a'
+alias d='cd ..'
 
 # Git setup
 alias gc='git commit'
