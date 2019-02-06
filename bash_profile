@@ -35,6 +35,7 @@ if [ -d "$HOME/bin" ]; then
     PATH="$HOME/bin":$PATH
 fi
 
+alias l='ls'
 alias ll='ls -l'
 alias la='ls -a'
 alias d='cd ..'
@@ -48,7 +49,7 @@ alias gl='git --no-pager log -3'
 alias gs='git status'
 alias gp='git pull --ff-only'
 alias ga='git add -u;git status'
-alias go='git checkout'
+alias gt='git checkout'
 
 if [ -d "/usr/local/git/bin" ]; then
     PATH="/usr/local/git/bin":$PATH
