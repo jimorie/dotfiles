@@ -21,9 +21,9 @@ function _venv {
     if [[ -n $VIRTUAL_ENV ]]; then
         venvroot=`dirname $VIRTUAL_ENV`
         if [[ "$PWD/" = "$venvroot/"* ]]; then
-            echo "\[\033[00;33m\] `basename $VIRTUAL_ENV`"; 
+            echo "\[\033[00;33m\] `basename $venvroot`"; 
         else
-            echo "\[\033[00;31m\] `basename $VIRTUAL_ENV`"; 
+            echo "\[\033[00;31m\] `basename $venvroot`"; 
         fi
     fi
 }
