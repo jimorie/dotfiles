@@ -1,20 +1,20 @@
-rm ~/.bash_profile
+rm -f ~/.bash_profile
 ln -s `pwd`/bash_profile ~/.bash_profile
 
-rm ~/.bashrc
+rm -f ~/.bashrc
 ln -s `pwd`/bashrc ~/.bashrc
 
-rm ~/.git-completion.bash
+rm -f ~/.git-completion.bash
 ln -s `pwd`/git-completion.bash ~/.git-completion.bash
 
-rm ~/.inputrc
+rm -f ~/.inputrc
 ln -s `pwd`/inputrc ~/.inputrc
 
-rm ~/.tmux.conf
+rm -f ~/.tmux.conf
 ln -s `pwd`/tmux.conf ~/.tmux.conf
 
-rm  ~/.vim
+rm -f ~/.vim
 ln -s `pwd`/vim  ~/.vim
 
-rm ~/.vimrc
+rm -f ~/.vimrc
 ln -s `pwd`/vim/vimrc ~/.vimrc
