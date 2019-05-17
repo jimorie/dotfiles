@@ -6,4 +6,5 @@
 *.DS_Store
 vim/.netrwhist
 st3/Packages/User/oscrypto-ca-bundle.crt
+st3/Packages/ColorPick/bin/colorpick
 *.log
