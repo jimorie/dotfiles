@@ -187,6 +187,11 @@ let g:ctrlp_status_func = {
   \ 'prog': 'CtrlPStatusFunc_2',
   \ }
 
+let g:ctrlp_prompt_mappings = {
+  \ 'PrtSelectMove("j")':   ['<c-k>', '<down>'],
+  \ 'PrtSelectMove("k")':   ['<c-i>', '<up>'],
+  \ }
+
 function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
   let g:lightline.ctrlp_regex = a:regex
   let g:lightline.ctrlp_prev = a:prev
