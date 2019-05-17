@@ -10,7 +10,15 @@ export LANG=en_US.UTF-8
 PROMPT_COMMAND=prompter
 
 function prompter() {
-    export PS1="\n\[\033[00;32m\]\u@\h$(_venv)\[\033[00;36m\]$(_gitbranch) \[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
+    export PS1="\n$(_usercolor)\u@\h$(_venv)\[\033[00;36m\]$(_gitbranch) \[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
+}
+
+function _usercolor {
+    if [[ $(id -u) -eq 0 ]]; then
+        echo "\[\033[00;35m\]"
+    else
+        echo "\[\033[00;32m\]"
+    fi
 }
 
 function _gitbranch {
