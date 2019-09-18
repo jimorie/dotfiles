@@ -2,6 +2,7 @@
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+export HISTSIZE=10000
 
 # Prompt setup
 
@@ -89,3 +90,5 @@ export PIPENV_VENV_IN_PROJECT=1
 # Go setup
 export GOPATH=$HOME/Projects/go
 export PATH=$PATH:$GOPATH/bin
+
+export PATH="$HOME/.poetry/bin:$PATH"
