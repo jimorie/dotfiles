@@ -5,12 +5,12 @@
 	],
 	"installed_packages":
 	[
-		"A File Icon",
 		"AlignTab",
 		"ayu",
 		"Chain of Command",
 		"ColorPick",
 		"ColorSchemeEditor",
+		"FileIcons Mono",
 		"Git blame",
 		"GitGutter",
 		"LineJumper",
