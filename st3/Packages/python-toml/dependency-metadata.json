@@ -1,0 +1,1 @@
+{"platforms": ["*"], "url": "https://github.com/jgirardet/sublime-toml/issues", "version": "1.0.0", "description": "Python lib for TOML", "sublime_text": ">=3000"}

@@ -294,6 +294,24 @@ class ServiceProxy:
                 req_dict["seq"]
             )
 
+    def quick_info_full(self, path, location=Location(1, 1), on_completed=None):
+        args = {"file": path, "line": location.line, "offset": location.offset}
+        req_dict = self.create_req_dict("quickinfo-full", args)
+        json_str = json_helpers.encode(req_dict)
+        callback = on_completed or (lambda: None)
+        if not IS_ST2:
+            self.__comm.sendCmdAsync(
+                json_str,
+                callback,
+                req_dict["seq"]
+            )
+        else:
+            self.__comm.sendCmd(
+                json_str,
+                callback,
+                req_dict["seq"]
+            )
+
     def save_to(self, path, alternatePath):
         args = {"file": path, "tmpfile": alternatePath}
         req_dict = self.create_req_dict("saveto", args)
@@ -334,3 +352,35 @@ class ServiceProxy:
         if args:
             req_dict["arguments"] = args
         return req_dict
+
+    def get_semantic_errors(self, path):
+        args = {
+            "file": path
+        }
+        req_dict = self.create_req_dict("semanticDiagnosticsSync", args)
+        json_str = json_helpers.encode(req_dict)
+        response_dict = self.__comm.sendCmdSync(json_str, req_dict["seq"])
+        return response_dict
+
+    def get_syntactic_errors(self, path):
+        args = {
+            "file": path
+        }
+        req_dict = self.create_req_dict("syntacticDiagnosticsSync", args)
+        json_str = json_helpers.encode(req_dict)
+        response_dict = self.__comm.sendCmdSync(json_str, req_dict["seq"])
+        return response_dict
+
+    def get_code_fixes(self, path, startLine, startOffset, endLine, endOffset, errorCodes):
+        args = {
+            "file": path,
+            "startLine": startLine,
+            "startOffset": startOffset,
+            "endLine": endLine,
+            "endOffset": endOffset,
+            "errorCodes": errorCodes
+        }
+        req_dict = self.create_req_dict("getCodeFixes", args)
+        json_str = json_helpers.encode(req_dict)
+        response_dict = self.__comm.sendCmdSync(json_str, req_dict["seq"])
+        return response_dict
