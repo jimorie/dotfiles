@@ -1,5 +1,13 @@
 dir=${1:-~}
 
+verlte() {
+    [  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
+}
+
+verlt() {
+    [ "$1" = "$2" ] && return 1 || verlte $1 $2
+}
+
 rm -f $dir/.bash_profile
 ln -s `pwd`/bash_profile $dir/.bash_profile
 
@@ -13,7 +21,11 @@ rm -f $dir/.inputrc
 ln -s `pwd`/inputrc $dir/.inputrc
 
 rm -f $dir/.tmux.conf
-ln -s `pwd`/tmux.conf $dir/.tmux.conf
+if $(verlt "`tmux -V|awk -F'[^0-9.]*' '$0=$2'`" "2.9"); then
+    ln -s `pwd`/tmux-pre-2.9.conf $dir/.tmux.conf
+else
+    ln -s `pwd`/tmux.conf $dir/.tmux.conf
+fi
 
 rm -f $dir/.vim
 ln -s `pwd`/vim  $dir/.vim
