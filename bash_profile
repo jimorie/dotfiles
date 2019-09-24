@@ -45,7 +45,7 @@ if [ -d "$HOME/bin" ]; then
 fi
 
 alias l='ls'
-alias ll='ls -l'
+alias ll='ls -lh'
 alias la='ls -a'
 alias d='cd ..'
 
