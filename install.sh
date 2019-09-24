@@ -32,3 +32,10 @@ ln -s `pwd`/vim  $dir/.vim
 
 rm -f $dir/.vimrc
 ln -s `pwd`/vim/vimrc $dir/.vimrc
+
+if [ ! -f "$dir/.gitconfig" ]; then
+    echo "[include]" >> $dir/.gitconfig
+    echo "    path = $(pwd)/gitconfig" >> $dir/.gitconfig
+else
+    echo "Found existing $dir/.gitconfig -- will not overwrite"
+fi

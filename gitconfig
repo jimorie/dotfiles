@@ -1,5 +1,4 @@
 [user]
-    email = jimorie@gmail.com
     name = Petter Nyström
 [log]
     decorate = short
@@ -14,4 +13,12 @@
     ci = commit
     st = status
     br = branch
-
+[diff]
+    algorithm = patience
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = auto
+    ui = true
+    pager = true
