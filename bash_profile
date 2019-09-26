@@ -11,7 +11,7 @@ export HISTSIZE=10000
 PROMPT_COMMAND=prompter
 
 function prompter() {
-    export PS1="\n$(_usercolor)\u@\h$(_venv)\[\033[00;36m\]$(_gitbranch) \[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
+    export PS1="\n$(_usercolor)\u@\h$(_venv)\[\033[00;36m\]$(_pwb) \[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
 }
 
 function _usercolor {
@@ -22,7 +22,11 @@ function _usercolor {
     fi
 }
 
-function _gitbranch {
+function pwb {
+    _pwb | colrm 1 1
+}
+
+function _pwb {
     git branch 2>/dev/null | grep '^*' | colrm 1 1
 }
 
