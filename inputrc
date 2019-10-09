@@ -1,1 +1,18 @@
 set completion-ignore-case On
+set convert-meta On
+
+# Complement to C-u and C-k
+"\C-g": kill-whole-line
+
+# Perverted vi movement
+"\C-l": forward-word
+"\C-j": backward-word
+
+# Completion
+"\e[Z": menu-complete   # shift-tab
+
+# History searches for matching entries
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+"\C-p": history-search-backward
+"\C-n": history-search-forward

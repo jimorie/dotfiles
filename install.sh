@@ -14,6 +14,9 @@ ln -s `pwd`/bash_profile $dir/.bash_profile
 rm -f $dir/.bashrc
 ln -s `pwd`/bashrc $dir/.bashrc
 
+rm -f $dir/.inputrc
+ln -s `pwd`/inputrc $dir/.inputrc
+
 rm -f $dir/.git-completion.bash
 ln -s `pwd`/git-completion.bash $dir/.git-completion.bash
 
