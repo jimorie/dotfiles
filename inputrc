@@ -1,5 +1,4 @@
 set completion-ignore-case On
-set convert-meta On
 
 # Complement to C-u and C-k
 "\C-g": kill-whole-line
