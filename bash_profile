@@ -45,7 +45,7 @@ function _venv {
 export CLICOLOR=1;
 export LSCOLORS=ExGxcxdxCxxxxxxxxxxxxx;
 
-if [ -d "$HOME/bin" ]; then
+if [[ -d "$HOME/bin" && ":$PATH:" != *":$HOME/bin:"* ]]; then
     PATH="$HOME/bin":$PATH
 fi
 
@@ -65,7 +65,7 @@ alias gp='git pull --ff-only'
 alias ga='git add -u;git status'
 alias gt='git checkout'
 
-if [ -d "/usr/local/git/bin" ]; then
+if [[ -d "/usr/local/git/bin" && ":$PATH:" != *":/usr/local/git/bin:"* ]]; then
     PATH="/usr/local/git/bin":$PATH
 fi
 
@@ -74,10 +74,11 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 # Pyenv setup
+if [[ -d "$HOME/.pyenv/bin" && ":$PATH:" != *":$HOME/.pyenv/bin:"* ]]; then
+    PATH="$HOME/.pyenv/bin":$PATH
+fi
 if which pyenv > /dev/null 2>&1;
     then eval "$(pyenv init -)";
-    alias py2="pyenv shell 2.7.13;export PATH=$(echo $PATH | sed -e 's/:\/Users\/jimorie\/.pyenv\/versions\/[^:]*//g');export PATH='$PATH:/Users/jimorie/.pyenv/versions/2.7.13/bin'"
-    alias py3="pyenv shell 3.4.6;export PATH=$(echo $PATH | sed -e 's/:\/Users\/jimorie\/.pyenv\/versions\/[^:]*//g');export PATH='$PATH:/Users/jimorie/.pyenv/versions/3.4.6/bin'"
 fi
 
 # Virtualenv setup
@@ -94,6 +95,11 @@ export PIPENV_VENV_IN_PROJECT=1
 
 # Go setup
 export GOPATH=$HOME/Projects/go
-export PATH=$PATH:$GOPATH/bin
+if [[ -d "$GOPATH/bin" && ":$PATH:" != *":$GOPATH/bin:"* ]]; then
+    PATH="$GOPATH/bin":$PATH
+fi
 
-export PATH="$HOME/.poetry/bin:$PATH"
+# Poetry setup
+if [[ -d "$HOME/.poetry/bin" && ":$PATH:" != *":$HOME/.poetry/bin:"* ]]; then
+    PATH="$HOME/.poetry/bin":$PATH
+fi
