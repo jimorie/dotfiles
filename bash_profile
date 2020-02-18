@@ -103,3 +103,8 @@ fi
 if [[ -d "$HOME/.poetry/bin" && ":$PATH:" != *":$HOME/.poetry/bin:"* ]]; then
     PATH="$HOME/.poetry/bin":$PATH
 fi
+
+# Pipx setup
+if [[ -d "$HOME/.local/bin" && ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+    PATH=$PATH:"$HOME/.local/bin"
+fi
