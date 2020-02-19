@@ -358,3 +358,7 @@ set scrolloff=10
 
 set signcolumn=yes
 
+" MultiCursors
+
+let g:multi_cursor_quit_key            = '<C-c>'
+
