@@ -42,3 +42,6 @@ if [ ! -f "$dir/.gitconfig" ]; then
 else
     echo "Found existing $dir/.gitconfig -- will not overwrite"
 fi
+
+rm -f $dir/.gitignore
+ln -s `pwd`/gitignore $dir/.gitignore
