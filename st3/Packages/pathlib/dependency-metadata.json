@@ -1,1 +1,1 @@
-{"platforms": ["*"], "url": "https://github.com/packagecontrol/pathlib/issues", "version": "1.0.1", "description": "Python pathlib module", "sublime_text": "*"}
+{"description": "Python pathlib module", "version": "1.0.1", "platforms": ["*"], "sublime_text": "*", "url": "https://github.com/packagecontrol/pathlib/issues"}
