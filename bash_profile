@@ -49,6 +49,9 @@ if [[ -d "$HOME/bin" && ":$PATH:" != *":$HOME/bin:"* ]]; then
     PATH="$HOME/bin":$PATH
 fi
 
+if [[ `uname` = "Linux" ]]; then
+    alias ls='ls --color=auto'
+fi
 alias l='ls'
 alias ll='ls -lh'
 alias la='ls -a'
