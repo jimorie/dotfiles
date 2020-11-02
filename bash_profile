@@ -4,6 +4,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export HISTSIZE=10000
 export HISTCONTROL=ignoreboth:erasedups
+export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # Prompt setup
 
@@ -12,7 +13,7 @@ export HISTCONTROL=ignoreboth:erasedups
 PROMPT_COMMAND=prompter
 
 function prompter() {
-    export PS1="\n$(_usercolor)\u@\h$(_venv)\[\033[00;36m\]$(_pwb) \[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
+    export PS1="\n$(_usercolor)\u@\h$(_venv)\[\033[00;36m\] $(_pwb)\[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
 }
 
 function _usercolor {
@@ -24,11 +25,11 @@ function _usercolor {
 }
 
 function pwb {
-    _pwb | colrm 1 1
+    git rev-parse --abbrev-ref HEAD 2>/dev/null
 }
 
 function _pwb {
-    git branch 2>/dev/null | grep '^*' | colrm 1 1
+    pwb | tr '\n' ' '
 }
 
 function _venv {
@@ -44,10 +45,6 @@ function _venv {
 
 export CLICOLOR=1;
 export LSCOLORS=ExGxcxdxCxxxxxxxxxxxxx;
-
-if [[ -d "$HOME/bin" && ":$PATH:" != *":$HOME/bin:"* ]]; then
-    PATH="$HOME/bin":$PATH
-fi
 
 if [[ `uname` = "Linux" ]]; then
     alias ls='ls --color=auto'
@@ -110,4 +107,11 @@ fi
 # Pipx setup
 if [[ -d "$HOME/.local/bin" && ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
     PATH=$PATH:"$HOME/.local/bin"
+fi
+export PATH="/usr/local/sbin:$PATH"
+
+# Path setup
+
+if [[ -d "$HOME/bin" && ":$PATH:" != *":$HOME/bin:"* ]]; then
+    PATH="$HOME/bin":$PATH
 fi
