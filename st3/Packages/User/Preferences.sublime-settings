@@ -9,6 +9,7 @@
 	"caret_style": "phase",
 	"color_scheme": "Packages/Solarized Color Scheme/Solarized (light).sublime-color-scheme",
 	"drag_text": false,
+	"ensure_newline_at_eof_on_save": true,
 	"file_exclude_patterns":
 	[
 		"._*",
@@ -32,7 +33,7 @@
 		".eggs",
 		".pytest_cache"
 	],
-	"font_size": 19,
+	"font_size": 18,
 	"highlight_line": true,
 	"ignored_packages":
 	[
