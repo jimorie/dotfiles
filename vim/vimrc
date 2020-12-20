@@ -356,7 +356,7 @@ set scrolloff=10
 
 " GitGutter
 
-set signcolumn=yes
+" set signcolumn=yes
 
 " MultiCursors
 
