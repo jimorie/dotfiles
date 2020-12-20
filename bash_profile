@@ -54,6 +54,8 @@ alias ll='ls -lh'
 alias la='ls -a'
 alias d='cd ..'
 
+alias cloc='grep -cve "^\s*$"'
+
 # Git setup
 alias gc='git commit'
 alias gd='git diff'
@@ -82,7 +84,7 @@ if which pyenv > /dev/null 2>&1;
 fi
 
 # Virtualenv setup
-alias venv='source .venv/bin/activate'
+alias venv='source venv/bin/activate 2> /dev/null || source .venv/bin/activate'
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 if [[ -n $VIRTUAL_ENV ]]; then
     if [[ `which python` != "$VIRTUAL_ENV"* ]]; then
