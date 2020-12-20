@@ -31,9 +31,10 @@
 		".tox",
 		"*.egg-info",
 		".eggs",
-		".pytest_cache"
+		".pytest_cache",
+		"node_modules"
 	],
-	"font_size": 18,
+	"font_size": 15,
 	"highlight_line": true,
 	"ignored_packages":
 	[
