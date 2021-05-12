@@ -83,6 +83,14 @@ color xoria256
 highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
 
+" It's hard to release shift...
+
+cnoreabbrev W w
+cnoreabbrev Wq wq
+cnoreabbrev WQ wq
+cnoreabbrev Cq wq
+cnoreabbrev CQ wq
+
 " Python syntax
 
 let python_highlight_all = 1
