@@ -66,6 +66,7 @@ alias gs='git status'
 alias gp='git pull --ff-only'
 alias ga='git add -u;git status'
 alias gt='git checkout'
+alias git-cleanup='git branch -v|grep "\[gone\]"|awk "{ print $1; }"|xargs git branch -D'
 
 if [[ -d "/usr/local/git/bin" && ":$PATH:" != *":/usr/local/git/bin:"* ]]; then
     PATH="/usr/local/git/bin":$PATH
