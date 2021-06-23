@@ -1,10 +1,25 @@
+# General setup
+
+export CLICOLOR=1;
+export LSCOLORS=ExGxcxdxCxxxxxxxxxxxxx;
+export HISTSIZE=10000
+export HISTCONTROL=ignoreboth:erasedups
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+if [[ `uname` = "Linux" ]]; then
+    alias ls='ls --color=auto'
+fi
+alias l='ls'
+alias ll='ls -lh'
+alias la='ls -a'
+alias d='cd ..'
+
+alias cloc='grep -cve "^\s*$"'
+
 # Locale setup
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-export HISTSIZE=10000
-export HISTCONTROL=ignoreboth:erasedups
-export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # Prompt setup
 
@@ -43,20 +58,23 @@ function _venv {
     fi
 }
 
-export CLICOLOR=1;
-export LSCOLORS=ExGxcxdxCxxxxxxxxxxxxx;
-
-if [[ `uname` = "Linux" ]]; then
-    alias ls='ls --color=auto'
+# Virtualenv setup
+alias venv='source venv/bin/activate 2> /dev/null || source .venv/bin/activate'
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+if [[ -n $VIRTUAL_ENV ]]; then
+    if [[ `which python` != "$VIRTUAL_ENV"* ]]; then
+        unset VIRTUAL_ENV
+    fi
 fi
-alias l='ls'
-alias ll='ls -lh'
-alias la='ls -a'
-alias d='cd ..'
 
-alias cloc='grep -cve "^\s*$"'
+# Sublime text setup
+
+if [[ -d "/Applications/Sublime Text.app/Contents/SharedSupport/bin" && ":$PATH:" != *":/Applications/Sublime Text.app/Contents/SharedSupport/bin:"* ]]; then
+    PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin":$PATH
+fi
 
 # Git setup
+
 alias gc='git commit'
 alias gd='git diff'
 alias gf='git fetch'
@@ -66,7 +84,7 @@ alias gs='git status'
 alias gp='git pull --ff-only'
 alias ga='git add -u;git status'
 alias gt='git checkout'
-alias git-cleanup='git branch -v|grep "\[gone\]"|awk "{ print $1; }"|xargs git branch -D'
+alias git-cleanup='git remote prune origin;git branch -v|grep "\[gone\]"|cut -d" " -f3|xargs git branch -D'
 
 if [[ -d "/usr/local/git/bin" && ":$PATH:" != *":/usr/local/git/bin:"* ]]; then
     PATH="/usr/local/git/bin":$PATH
@@ -79,17 +97,8 @@ fi
 # Pyenv setup
 if [[ -d "$HOME/.pyenv/bin" && ":$PATH:" != *":$HOME/.pyenv/bin:"* ]]; then
     PATH="$HOME/.pyenv/bin":$PATH
-fi
-if which pyenv > /dev/null 2>&1;
-    then eval "$(pyenv init -)";
-fi
-
-# Virtualenv setup
-alias venv='source venv/bin/activate 2> /dev/null || source .venv/bin/activate'
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-if [[ -n $VIRTUAL_ENV ]]; then
-    if [[ `which python` != "$VIRTUAL_ENV"* ]]; then
-        unset VIRTUAL_ENV
+    if which pyenv > /dev/null 2>&1;
+        then eval "$(pyenv init -)";
     fi
 fi
 
@@ -109,11 +118,15 @@ fi
 
 # Pipx setup
 if [[ -d "$HOME/.local/bin" && ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-    PATH=$PATH:"$HOME/.local/bin"
+    PATH="$HOME/.local/bin":$PATH
 fi
-export PATH="/usr/local/sbin:$PATH"
 
-# Path setup
+# Brew setup
+if [[ -d "/usr/local/sbin" && ":$PATH:" != *":/usr/local/sbin:"* ]]; then
+    PATH="/usr/local/sbin":$PATH
+fi
+
+# Home bin setup
 
 if [[ -d "$HOME/bin" && ":$PATH:" != *":$HOME/bin:"* ]]; then
     PATH="$HOME/bin":$PATH
