@@ -11,9 +11,13 @@
 [alias]
     co = checkout
     ci = commit
+    ca = commit --amend
     st = status
     br = branch
     ff = merge --ff-only
+    pushorigin = push -u origin HEAD
+    forcepush = push --force-with-lease
+    fixup = commit --fixup
 [diff]
     algorithm = patience
 [color]
