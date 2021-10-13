@@ -10,14 +10,15 @@
     eol = lf
 [alias]
     co = checkout
+    cb = checkout -b
     ci = commit
     ca = commit --amend
+    cf = commit --fixup
     st = status
     br = branch
     ff = merge --ff-only
     pushorigin = push -u origin HEAD
-    forcepush = push --force-with-lease
-    fixup = commit --fixup
+    force = push --force-with-lease
 [diff]
     algorithm = patience
 [color]

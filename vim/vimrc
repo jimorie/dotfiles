@@ -236,8 +236,9 @@ let g:vimshell_force_overwrite_statusline = 0
 """ CtrlP settings from Korp
 
 let g:ctrlp_max_height = 71
-let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_clear_cache_on_exit = 1
 let g:ctrlp_lazy_update = 10
+let g:ctrlp_custom_ignore = 'dist\|venv\|.venv\|__pycache__'
 
 """ CTAGS
 
@@ -291,8 +292,8 @@ noremap H I
 set whichwrap+=<,>,h,l,[,]
 
 " Page up and page down with CTRL modifier
-noremap <C-i> 5<Up>
-noremap <C-k> 5<Down>
+noremap <C-i> -5
+noremap <C-k> +5
 
 " Move to top or bottom of screen
 noremap <S-i> 5<C-y>
