@@ -19,6 +19,7 @@
     ff = merge --ff-only
     pushorigin = push -u origin HEAD
     force = push --force-with-lease
+    pr = "!f() { git --no-pager log --pretty='format:* %s%n%n%b' origin..HEAD|sed 's/^\\([^*]\\)/    \\1/'; }; f"
 [diff]
     algorithm = patience
 [color]
