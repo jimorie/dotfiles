@@ -18,6 +18,7 @@
 		"GitGutter",
 		"HTMLBeautify",
 		"Jinja2",
+		"JSON Reindent",
 		"JSX",
 		"LineJumper",
 		"MagicPython",
@@ -35,6 +36,6 @@
 		"Theme - Soda",
 		"Tomorrow Color Schemes",
 		"TypeScript",
-		"Xdebug Client"
+		"Xdebug Client",
 	],
 }

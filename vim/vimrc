@@ -238,7 +238,7 @@ let g:vimshell_force_overwrite_statusline = 0
 let g:ctrlp_max_height = 71
 let g:ctrlp_clear_cache_on_exit = 1
 let g:ctrlp_lazy_update = 10
-let g:ctrlp_custom_ignore = 'dist\|venv\|.venv\|__pycache__'
+let g:ctrlp_custom_ignore = 'dist\|venv\|.venv\|__pycache__\|node_modules'
 
 """ CTAGS
 
