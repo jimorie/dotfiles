@@ -45,3 +45,12 @@ fi
 
 rm -f $dir/.gitignore
 ln -s `pwd`/gitignore $dir/.gitignore
+
+if [ ! -d "$dir/Library/Application\ Support/Sublime\ Text/Packages/User" ]; then
+    if [ ! -f "$dir/Library/Application Support/Sublime Text/Packages/User.orig" ]; then
+        mv "$dir/Library/Application Support/Sublime Text/Packages/User" "$dir/Library/Application Support/Sublime Text/Packages/User.orig" 
+    else
+        rm -rf "$dir/Library/Application Support/Sublime Text/Packages/User"
+    fi
+    ln -s "`pwd`/st4/User" "$dir/Library/Application Support/Sublime Text/Packages/User"
+fi
