@@ -30,3 +30,6 @@
     interactive = auto
     ui = true
     pager = true
+[gitreview]
+    remote = origin
+    track = true
