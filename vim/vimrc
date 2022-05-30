@@ -326,6 +326,7 @@ vnoremap <leader>p "_dP
 
 " CtrlP extras
 noremap <C-b> :CtrlPBuffer<CR>
+noremap <C-o> :CtrlPBuffer<CR>
 
 " Search
 noremap <C-f> /
