@@ -291,17 +291,19 @@ noremap H I
 " Let us wrap around line endings
 set whichwrap+=<,>,h,l,[,]
 
-" Page up and page down with CTRL modifier
-noremap <C-i> -5
-noremap <C-k> +5
-
-" Move to top or bottom of screen
-noremap <S-i> 5<C-y>
-noremap <S-k> 5<C-e>h 
+" Move between paragraphs with CTRL modifier
+noremap <C-i> {
+noremap <C-k> }
 
 " Move by words with CTRL modifier
 noremap <C-j> b
 noremap <C-l> e
+
+" Select lines with SHIFT modifier
+nmap <S-i> V<Up>
+nmap <S-k> V<Down>
+vmap <S-i> <Up>
+vmap <S-k> <Down>
 
 " Start and end of line with SHIFT modifier
 noremap <S-l> $
