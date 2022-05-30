@@ -1,0 +1,31 @@
+" WASD style movement
+noremap i k
+noremap j h
+noremap k j
+noremap h i
+noremap H I
+
+" Page up and page down with CTRL modifier
+noremap <C-i> 5k
+noremap <C-k> 5j
+
+" Move to start or end of line
+noremap J <Home>
+noremap L <End>
+
+" Move to next or previous paragraph
+noremap I }
+noremap K {
+
+" Move by words with CTRL modifier
+noremap <C-j> b
+noremap <C-l> e
+
+" Search
+noremap <C-f> /
+
+" Redo on same key
+noremap <C-u> <C-r>
+
+" Ctrl-C ftw
+noremap <silent> <C-c> <Esc>:noh<CR>

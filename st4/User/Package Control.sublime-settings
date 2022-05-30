@@ -5,7 +5,11 @@
 	],
 	"installed_packages":
 	[
+		"JSON Reindent",
+		"MarkdownLivePreview",
+		"NeoVintageous",
 		"Package Control",
+		"Show Character Code",
 		"Solarized Color Scheme",
 	],
 }
