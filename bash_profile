@@ -13,6 +13,7 @@ alias l='ls'
 alias ll='ls -lh'
 alias la='ls -a'
 alias d='cd ..'
+alias u='cd -'
 
 alias cloc='grep -cve "^\s*$"'
 
