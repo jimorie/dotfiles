@@ -5,6 +5,9 @@
 	],
 	"installed_packages":
 	[
+		"Cucumber",
+		"FileIcons Mono",
+		"Git blame",
 		"JSON Reindent",
 		"MarkdownLivePreview",
 		"NeoVintageous",
