@@ -57,6 +57,7 @@ autocmd FileType python setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 
 autocmd FileType php setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 autoindent smartindent omnifunc=phpomplete#Complete
 autocmd FileType sh setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4 autoindent smartindent omnifunc=phpomplete#Complete
 autocmd FileType cucumber setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4
+autocmd BufRead *.py inoremap # X<c-h>#
 "autocmd BufRead,BufNewFile *pl,*.py setlocal filetype=python
 "autocmd BufNewFile,BufReadPost,FilterReadPost,FileReadPost,Syntax * SpaceHi
 "autocmd FileType help NoSpaceHi
@@ -275,6 +276,8 @@ function! JumpToTag(preview)
 endfunction
 
 
+" Let us wrap around line endings
+set whichwrap+=<,>,h,l,[,]
 
 """ Personal key bindings
 
@@ -286,28 +289,27 @@ noremap l <Right>
 noremap h i
 noremap H I
 
-" Above works better with a short keystroke timeout
-
-" Let us wrap around line endings
-set whichwrap+=<,>,h,l,[,]
-
-" Move between paragraphs with CTRL modifier
-noremap <C-i> {
-noremap <C-k> }
+" Move longer with CTRL modifier
+noremap <C-i> 5<Up>
+noremap <C-k> 5<Down>
+inoremap <C-i> <Up>
+inoremap <C-k> <Down>
 
 " Move by words with CTRL modifier
-noremap <C-j> b
-noremap <C-l> e
+nnoremap <C-j> b
+nnoremap <C-l> e
 
-" Select lines with SHIFT modifier
-nmap <S-i> V<Up>
-nmap <S-k> V<Down>
-vmap <S-i> <Up>
-vmap <S-k> <Down>
+" Move GitGutterNextHunk GitGutter hunks with SHIFT modifier
+nnoremap <S-i> :GitGutterEnable<CR>:GitGutterPrevHunk<CR>
+nnoremap <S-k> :GitGutterEnable<CR>:GitGutterNextHunk<CR>
+vnoremap <S-i> {<Down>
+vnoremap <S-k> }<Up>
 
-" Start and end of line with SHIFT modifier
-noremap <S-l> $
-noremap <S-j> ^
+" Move to start and end of line with SHIFT modifier
+nnoremap <S-l> $
+nnoremap <S-j> ^
+vnoremap <S-l> $
+vnoremap <S-j> ^
 
 " Window navigation
 noremap <C-w>i <C-w>k
@@ -327,6 +329,7 @@ vnoremap <leader>p "_dP
 " CtrlP extras
 noremap <C-b> :CtrlPBuffer<CR>
 noremap <C-o> :CtrlPBuffer<CR>
+noremap <C-r> :CtrlPBufTag<CR>
 
 " Search
 noremap <C-f> /
@@ -336,10 +339,15 @@ nnoremap <leader>f :xa<cr>
 noremap <C-u> <C-r>
 
 " Ctrl-C ftw
-noremap <silent> <C-c> <Esc>:noh<CR>
+nnoremap <silent> <C-c> <Esc>:noh<CR>
+inoremap <silent> <C-c> <Esc>
+vnoremap <silent> <C-c> <Esc>
 
 " Colon is hard
 noremap <CR> :
+
+" Comment block
+vnoremap # <Home><C-v>I#<Esc>
 
 " Goto the next occurence of a just deleted text 
 noremap <silent> - :exe '/' . @-<CR>n
@@ -366,9 +374,8 @@ set hlsearch
 " Keep 3 lines below and above the cursor
 set scrolloff=10
 
-" GitGutter
-
-" set signcolumn=yes
+" Set wildmode
+set wildmode=longest,list,full
 
 " MultiCursors
 
