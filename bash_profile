@@ -132,3 +132,10 @@ fi
 if [[ -d "$HOME/bin" && ":$PATH:" != *":$HOME/bin:"* ]]; then
     PATH="$HOME/bin":$PATH
 fi
+
+# Java setup
+
+if [[ -d "/Library/Java/JavaVirtualMachines/jdk1.8.0_341.jdk/Contents/Home" ]]; then
+    export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_341.jdk/Contents/Home"
+    PATH="$JAVA_HOME/bin":$PATH
+fi
