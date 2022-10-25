@@ -282,30 +282,42 @@ set whichwrap+=<,>,h,l,[,]
 """ Personal key bindings
 
 " WASD style movement
-noremap i <Up>
-noremap j <Left>
-noremap k <Down>
-noremap l <Right>
-noremap h i
-noremap H I
+nnoremap i <Up>
+nnoremap k <Down>
+nnoremap j <Left>
+nnoremap l <Right>
+nnoremap h i
+nnoremap H I
 
-" Move longer with CTRL modifier
-noremap <C-i> 5<Up>
-noremap <C-k> 5<Down>
+vnoremap i <Up>
+vnoremap k <Down>
+vnoremap j <Left>
+vnoremap l <Right>
+vnoremap h i
+vnoremap H I
+
+" Ctrl-modifier
+nnoremap <C-i> 5<Up>
+nnoremap <C-k> 5<Down>
+nnoremap <C-j> <S-Left>
+nnoremap <C-l> <S-Right>
+
+vnoremap <C-i> 5<Up>
+vnoremap <C-k> 5<Down>
+vnoremap <C-j> <S-Left>
+vnoremap <C-l> <S-Right>
+
 inoremap <C-i> <Up>
 inoremap <C-k> <Down>
+inoremap <C-j> <Left>
+inoremap <C-l> <Right>
 
-" Move by words with CTRL modifier
-nnoremap <C-j> b
-nnoremap <C-l> e
-
-" Move GitGutterNextHunk GitGutter hunks with SHIFT modifier
+" Shift-modifier
 nnoremap <S-i> :GitGutterEnable<CR>:GitGutterPrevHunk<CR>
 nnoremap <S-k> :GitGutterEnable<CR>:GitGutterNextHunk<CR>
 vnoremap <S-i> {<Down>
 vnoremap <S-k> }<Up>
 
-" Move to start and end of line with SHIFT modifier
 nnoremap <S-l> $
 nnoremap <S-j> ^
 vnoremap <S-l> $
@@ -381,3 +393,6 @@ set wildmode=longest,list,full
 
 let g:multi_cursor_quit_key            = '<C-c>'
 
+" GitGutter
+
+let g:gitgutter_map_keys = 0
