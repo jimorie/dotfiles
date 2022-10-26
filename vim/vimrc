@@ -243,7 +243,7 @@ let g:ctrlp_custom_ignore = 'dist\|venv\|.venv\|__pycache__\|node_modules'
 
 """ CTAGS
 
-let mapleader = ' '
+let mapleader = ','
 
 nnoremap <leader>j :call JumpToTag(0)<CR>
 
@@ -286,15 +286,14 @@ nnoremap i <Up>
 nnoremap k <Down>
 nnoremap j <Left>
 nnoremap l <Right>
-nnoremap h i
-nnoremap H I
 
 vnoremap i <Up>
 vnoremap k <Down>
 vnoremap j <Left>
 vnoremap l <Right>
-vnoremap h i
-vnoremap H I
+
+noremap h i
+noremap H I
 
 " Ctrl-modifier
 nnoremap <C-i> 5<Up>
