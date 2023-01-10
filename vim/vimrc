@@ -306,8 +306,6 @@ vnoremap <C-k> 5<Down>
 vnoremap <C-j> <S-Left>
 vnoremap <C-l> <S-Right>
 
-inoremap <C-i> <Up>
-inoremap <C-k> <Down>
 inoremap <C-j> <Left>
 inoremap <C-l> <Right>
 
