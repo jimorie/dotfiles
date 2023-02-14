@@ -4,8 +4,8 @@ set completion-ignore-case On
 "\C-g": kill-whole-line
 
 # Perverted vi movement
-"\C-l": forward-char
-"\C-j": backward-char
+"\C-l": forward-word
+"\C-j": backward-word
 
 # Completion
 "\e[Z": menu-complete   # shift-tab
