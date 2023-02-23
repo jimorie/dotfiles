@@ -31,5 +31,6 @@
     ui = true
     pager = true
 [gitreview]
+    username = pnystrom
     remote = origin
     track = true
