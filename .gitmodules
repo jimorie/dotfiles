@@ -16,3 +16,6 @@
 [submodule "vim/pack/default/start/xoria256.vim"]
 	path = vim/pack/default/start/xoria256.vim
 	url = git@github.com:jimorie/xoria256.vim.git
+[submodule "vim/pack/default/start/lightline.vim"]
+	path = vim/pack/default/start/lightline.vim
+	url = git@github.com:itchyny/lightline.vim.git
