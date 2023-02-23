@@ -8,6 +8,8 @@ verlt() {
     [ "$1" = "$2" ] && return 1 || verlte $1 $2
 }
 
+git submodule update --init
+
 rm -f $dir/.bash_profile
 ln -s `pwd`/bash_profile $dir/.bash_profile
 
