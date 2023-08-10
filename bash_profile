@@ -6,6 +6,8 @@ export HISTSIZE=10000
 export HISTCONTROL=ignoreboth:erasedups
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
+shopt -s histappend
+
 if [[ `uname` = "Linux" ]]; then
     alias ls='ls --color=auto'
 fi
