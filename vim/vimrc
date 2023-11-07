@@ -25,6 +25,8 @@ autocmd BufRead *.py inoremap # X<c-h>#
 
 set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
 
+" Mouse stuff
+set mouse=a  " Enable mouse reporting
 
 " Status line stuff
 set laststatus=2  " Always display the status line
