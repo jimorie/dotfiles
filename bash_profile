@@ -47,16 +47,19 @@ function pwb {
 }
 
 function _pwb {
-    pwb | tr '\n' ' '
+    br=`pwb | tr '\n' ' '`
+    if [[ ! -z $br ]]; then
+        echo "⎇ $br"
+    fi
 }
 
 function _venv {
     if [[ -n $VIRTUAL_ENV ]]; then
         venvroot=`dirname $VIRTUAL_ENV`
         if [[ "$PWD/" = "$venvroot/"* ]]; then
-            echo "\[\033[00;33m\] `basename $venvroot`"; 
+            echo "\[\033[01;33m\] venv:`basename $venvroot`"; 
         else
-            echo "\[\033[00;31m\] `basename $venvroot`"; 
+            echo "\[\033[00;33m\] venv:`basename $venvroot`"; 
         fi
     fi
 }
