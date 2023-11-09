@@ -65,7 +65,7 @@ function _venv {
 }
 
 # Virtualenv setup
-alias venv='source venv/bin/activate 2> /dev/null || source .venv/bin/activate'
+alias venv='source venv/bin/activate 2> /dev/null || source venv3/bin/activate 2> /dev/null || source .venv/bin/activate'
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 if [[ -n $VIRTUAL_ENV ]]; then
     if [[ `which python` != "$VIRTUAL_ENV"* ]]; then
