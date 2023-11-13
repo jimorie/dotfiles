@@ -26,43 +26,43 @@ export LANG=en_US.UTF-8
 
 # Prompt setup
 
-#PS1="\n\[\033[00;32m\]\u@\h\[\033[00;33m\]\$(if [[ -n \$VIRTUAL_ENV ]]\; then echo basename \$VIRTUAL_ENV; else echo " "\; fi)\[\033[00;36m\]\$(git branch 2>/dev/null | grep '^*' | colrm 1 1) \[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
-
-PROMPT_COMMAND=prompter
-
-function prompter() {
-    export PS1="\n$(_usercolor)\u@\h$(_venv)\[\033[00;36m\] $(_pwb)\[\033[01;34m\]\w\n\[\033[01;30m\]\$\[\033[00m\] "
-}
-
-function _usercolor {
-    if [[ $(id -u) -eq 0 ]]; then
-        echo "\[\033[00;35m\]"
-    else
-        echo "\[\033[00;32m\]"
-    fi
-}
-
 function pwb {
     git rev-parse --abbrev-ref HEAD 2>/dev/null
 }
 
-function _pwb {
-    br=`pwb | tr '\n' ' '`
-    if [[ ! -z $br ]]; then
-        echo "⎇ $br"
+function prompter() {
+    # User color
+    if [[ $(id -u) -eq 0 ]]; then
+        usercolor="\[\033[00;35m\]"
+    else
+        usercolor="\[\033[00;32m\]"
     fi
-}
-
-function _venv {
+    # Git branch
+    br=`pwb`
+    if [[ ! -z $br ]]; then
+        if [[ ${#br} -gt 40 ]]; then
+            br="${br:0:39}…"
+        fi
+        br="\[\033[00;36m\] ⎇ $br"
+    fi
+    # Python virtualenv
     if [[ -n $VIRTUAL_ENV ]]; then
         venvroot=`dirname $VIRTUAL_ENV`
         if [[ "$PWD/" = "$venvroot/"* ]]; then
-            echo "\[\033[01;33m\] venv:`basename $venvroot`"; 
+            venvroot=`basename $venvroot`
+            venvroot="\[\033[00;33m\] venv:${venvroot:0:32}";
         else
-            echo "\[\033[00;33m\] venv:`basename $venvroot`"; 
+            venvroot=`basename $venvroot`
+            venvroot="\[\033[00;31m\] venv:${venvroot:0:32}";
         fi
+    else
+        venvroot=""
     fi
+    # Make it so!
+    export PS1="\n$usercolor\u@\h \[\033[01;34m\]\w$br$venvroot\n\[\033[01;30m\]\$\[\033[00m\] "
 }
+
+PROMPT_COMMAND=prompter
 
 # Virtualenv setup
 alias venv='source venv/bin/activate 2> /dev/null || source venv3/bin/activate 2> /dev/null || source .venv/bin/activate'
