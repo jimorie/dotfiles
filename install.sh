@@ -38,6 +38,9 @@ ln -s `pwd`/vim  $dir/.vim
 rm -f $dir/.vimrc
 ln -s `pwd`/vim/vimrc $dir/.vimrc
 
+rm -f $dir/.config/nvim
+ln -s `pwd`/nvim $dir/.config/nvim
+
 if [ ! -f "$dir/.gitconfig" ]; then
     echo "[include]" >> $dir/.gitconfig
     echo "    path = $(pwd)/gitconfig" >> $dir/.gitconfig
