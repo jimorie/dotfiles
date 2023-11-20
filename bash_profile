@@ -79,6 +79,11 @@ if [[ -d "/Applications/Sublime Text.app/Contents/SharedSupport/bin" && ":$PATH:
     PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin":$PATH
 fi
 
+# nvim setup
+if which nvim > /dev/null 2>&1; then
+    alias vim=nvim
+fi
+
 # Git setup
 
 alias gc='git commit'
