@@ -149,3 +149,9 @@ if [[ -d "/Library/Java/JavaVirtualMachines/jdk1.8.0_341.jdk/Contents/Home" ]]; 
     export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_341.jdk/Contents/Home"
     PATH="$JAVA_HOME/bin":$PATH
 fi
+
+# Rust setup
+
+if [[ -d "$HOME/.cargo" && ":$PATH:" != *"/Users/jimorie/.cargo/bin"* ]]; then
+    source "$HOME/.cargo/env"
+fi
