@@ -34,12 +34,7 @@ set noshowmode    " Insert is shown by lightline
 set ruler         " show the cursor position all the time
 set number
 
-" Make it obvious where 80 characters is
-"set textwidth=80
-"set colorcolumn=+1
-
 " Color scheme
-
 syntax on
 set t_Co=256
 color xoria256
@@ -58,8 +53,6 @@ cnoreabbrev CQ wq
 " Python syntax
 
 let python_highlight_all = 1
-
-
 
 " Lightline
 
@@ -145,6 +138,8 @@ function! LightLineMode()
         \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
+" CtrlP
+
 function! CtrlPMark()
   if expand('%:t') =~ 'ControlP' && has_key(g:lightline, 'ctrlp_item')
     call lightline#link('iR'[g:lightline.ctrlp_regex])
@@ -177,32 +172,14 @@ function! CtrlPStatusFunc_2(str)
   return lightline#statusline(0)
 endfunction
 
-"let g:tagbar_status_func = 'TagbarStatusFunc'
-"
-"function! TagbarStatusFunc(current, sort, fname, ...) abort
-"    let g:lightline.fname = a:fname
-"  return lightline#statusline(0)
-"endfunction
-
-"augroup AutoSyntastic
-"  autocmd!
-"  autocmd BufWritePost *.c,*.cpp call s:syntastic()
-"augroup END
-"function! s:syntastic()
-"  SyntasticCheck
-"  call lightline#update()
-"endfunction
-
-let g:unite_force_overwrite_statusline = 0
-let g:vimfiler_force_overwrite_statusline = 0
-let g:vimshell_force_overwrite_statusline = 0
-
-""" CtrlP settings from Korp
-
 let g:ctrlp_max_height = 71
 let g:ctrlp_clear_cache_on_exit = 1
 let g:ctrlp_lazy_update = 10
 let g:ctrlp_custom_ignore = 'dist\|venv\|.venv\|__pycache__\|node_modules'
+
+noremap <C-b> :CtrlPBuffer<CR>
+noremap <C-o> :CtrlPBuffer<CR>
+noremap <C-r> :CtrlPBufTag<CR>
 
 """ CTAGS
 
@@ -238,9 +215,28 @@ function! JumpToTag(preview)
     endtry
 endfunction
 
-
 " Let us wrap around line endings
 set whichwrap+=<,>,h,l,[,]
+
+" Backspace everything
+set backspace=indent,eol,start
+
+" Highlight search
+set hlsearch
+
+" Keep 10 lines below and above the cursor
+set scrolloff=10
+
+" Set wildmode
+set wildmode=longest,list,full
+
+" MultiCursors
+
+let g:multi_cursor_quit_key            = '<C-c>'
+
+" GitGutter
+
+let g:gitgutter_map_keys = 0
 
 """ Personal key bindings
 
@@ -272,12 +268,6 @@ vnoremap <C-l> <S-Right>
 inoremap <C-j> <Left>
 inoremap <C-l> <Right>
 
-" Shift-modifier
-nnoremap <S-i> :GitGutterEnable<CR>:GitGutterPrevHunk<CR>
-nnoremap <S-k> :GitGutterEnable<CR>:GitGutterNextHunk<CR>
-vnoremap <S-i> {<Down>
-vnoremap <S-k> }<Up>
-
 nnoremap <S-l> $
 nnoremap <S-j> ^
 vnoremap <S-l> $
@@ -292,23 +282,20 @@ noremap <C-w>k <C-w>j
 noremap <C-w><C-k> <C-w>j
 noremap <C-w><C-l> <C-w>l
 
-" Delete without yanking
-noremap <leader>d "_d
-
-" Replace selected text without yanking it
-vnoremap <leader>p "_dP
-
-" CtrlP extras
-noremap <C-b> :CtrlPBuffer<CR>
-noremap <C-o> :CtrlPBuffer<CR>
-noremap <C-r> :CtrlPBufTag<CR>
-
 " Search
 noremap <C-f> /
-nnoremap <leader>f :xa<cr>
+
+" Search for current selection
+vnoremap // y/<C-R>"<CR>
 
 " Redo on same key
 noremap <C-u> <C-r>
+
+" Comment block
+vnoremap # <Home><C-v>I#<Esc>
+
+" Repeat last change and go to next occurence
+noremap _ .n
 
 " Ctrl-C ftw
 nnoremap <silent> <C-c> <Esc>:noh<CR>
@@ -318,41 +305,28 @@ vnoremap <silent> <C-c> <Esc>
 " Colon is hard
 noremap <CR> :
 
-" Comment block
-vnoremap # <Home><C-v>I#<Esc>
+" It's hard to release shift...
 
+cnoreabbrev W w
+cnoreabbrev Wq wq
+cnoreabbrev WQ wq
+cnoreabbrev Cq wq
+cnoreabbrev CQ wq
+
+
+" Shift-modifier
+nnoremap <S-i> :GitGutterEnable<CR>:GitGutterPrevHunk<CR>
+nnoremap <S-k> :GitGutterEnable<CR>:GitGutterNextHunk<CR>
+vnoremap <S-i> {<Down>
+vnoremap <S-k> }<Up>
+
+" Delete without yanking
+noremap <leader>d "_d
+
+" Replace selected text without yanking it
+vnoremap <leader>p "_dP
 " Goto the next occurence of a just deleted text 
 noremap <silent> - :exe '/' . @-<CR>n
 
 " Repeat last change and go to next occurence
 noremap _ .n
-
-" Mode shortcuts
-"nmap \l :setlocal number!<CR>
-"nmap \o :set paste!<CR>
-
-" Search for current selection
-vnoremap // y/<C-R>"<CR>
-
-" Disable X11 communication
-set clipboard=autoselect,exclude:.*
-
-" Backspace everything
-set backspace=indent,eol,start
-
-" Highlight search
-set hlsearch
-
-" Keep 3 lines below and above the cursor
-set scrolloff=10
-
-" Set wildmode
-set wildmode=longest,list,full
-
-" MultiCursors
-
-let g:multi_cursor_quit_key            = '<C-c>'
-
-" GitGutter
-
-let g:gitgutter_map_keys = 0
