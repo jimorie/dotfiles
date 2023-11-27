@@ -33,6 +33,10 @@ nnoremap <S-j> ^
 vnoremap <S-l> $
 vnoremap <S-j> ^
 
+nnoremap <C-S-K> J
+
+nnoremap vi v<Up>
+
 " Window navigation
 noremap <C-w>i <C-w>k
 noremap <C-w><C-i> <C-w>k
@@ -58,9 +62,9 @@ vnoremap # <Home><C-v>I#<Esc>
 noremap _ .n
 
 " Ctrl-C ftw
-nnoremap <silent> <C-c> <Esc>:noh<CR>
-inoremap <silent> <C-c> <Esc>
-vnoremap <silent> <C-c> <Esc>
+" nnoremap <silent> <C-c> <Esc>:noh<CR>
+" inoremap <silent> <C-c> <Esc>
+" vnoremap <silent> <C-c> <Esc>
 
 " Colon is hard
 noremap <CR> :
@@ -72,4 +76,3 @@ cnoreabbrev Wq wq
 cnoreabbrev WQ wq
 cnoreabbrev Cq wq
 cnoreabbrev CQ wq
-
