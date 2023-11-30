@@ -59,3 +59,7 @@ if [ -d "$dir/Library/Application Support/Sublime Text/Packages/User" ]; then
     fi
     ln -s "`pwd`/st4/User" "$dir/Library/Application Support/Sublime Text/Packages/User"
 fi
+
+# Install to ~/bin
+mkdir -p $dir/bin
+find `pwd`/bin -type f -exec cp -a {} $dir/bin \;
