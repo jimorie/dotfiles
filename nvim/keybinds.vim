@@ -62,9 +62,10 @@ vnoremap # <Home><C-v>I#<Esc>
 noremap _ .n
 
 " Ctrl-C ftw
-" nnoremap <silent> <C-c> <Esc>:noh<CR>
-" inoremap <silent> <C-c> <Esc>
-" vnoremap <silent> <C-c> <Esc>
+nnoremap <silent> <C-c> <Esc>:noh<CR>
+inoremap <silent> <C-c> <Esc>
+vnoremap <silent> <C-c> <Esc>
+cnoremap <silent> <C-c> <Esc>
 
 " Colon is hard
 noremap <CR> :
