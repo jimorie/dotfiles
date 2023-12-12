@@ -80,9 +80,9 @@ def main():
     ]
     proc = subprocess.run(ssh_cmd)
     proc.check_returncode()
-    print("Services need to be restarted for livehacks to take effect!")
     print("Run following command to restore original .pyc files:")
-    print(f"find '{target_directory}' -name '\''*.py'\'' -exec mv -v '\''{{}}c.orig'\'' '\''{{}}c'\'' \;")
+    print(f'sudo find \'{target_directory}\' -name \'*.py\' -exec mv -v {{}}c.orig {{}}c \\;',)
+    print("Services need to be restarted for livehacks to take effect!")
 
 
 if __name__ == '__main__':
