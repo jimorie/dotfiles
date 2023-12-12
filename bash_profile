@@ -155,3 +155,8 @@ fi
 if [[ -d "$HOME/.cargo" && ":$PATH:" != *"/Users/jimorie/.cargo/bin"* ]]; then
     source "$HOME/.cargo/env"
 fi
+
+# Opsview setup
+
+alias livehack='find . -name '\''*.py'\'' -exec mv -v '\''{}c'\'' '\''{}c.orig'\'' \;'
+alias liveunhack='find . -name '\''*.py'\'' -exec mv -v '\''{}c.orig'\'' '\''{}c'\'' \;'
