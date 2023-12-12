@@ -72,6 +72,10 @@ def main():
             f'{host}:{target_path}'
         ]
         proc = subprocess.run(rsync_cmd)
+        proc.check_returncode()
+    enable_livehack_cmd = "find . -name '\\''*.py'\\'' -exec mv -v '\\''{}c'\\'' '\\''{}c.orig'\\'' \\;"
+    proc = subprocess.run(f'ssh {host} "{enable_livehack_cmd}"')
+    proc.check_returncode()
 
 
 if __name__ == '__main__':
