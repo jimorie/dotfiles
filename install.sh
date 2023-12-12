@@ -62,4 +62,4 @@ fi
 
 # Install to ~/bin
 mkdir -p $dir/bin
-find `pwd`/bin -type f -exec cp -a {} $dir/bin \;
+find `pwd`/bin -type f -exec ln -s {} $dir/bin \;
