@@ -375,14 +375,19 @@ require("nvim-tree").setup({
     sorter = "case_sensitive",
   },
   view = {
-    width = 30,
+    width = {min = 30, max = 90},
   },
   renderer = {
     group_empty = true,
   },
+  modified = {
+    enable = false,
+  },
   filters = {
     dotfiles = true,
+    custom = {"__pycache__"},
   },
+  hijack_cursor = true,
 })
 
 vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<cr>', { desc = 'Toggle nvim-tree' })
