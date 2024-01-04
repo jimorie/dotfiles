@@ -7,7 +7,7 @@
 	"caret_extra_top": 2,
 	"caret_extra_width": 1,
 	"caret_style": "phase",
-	"color_scheme": "Packages/Solarized Color Scheme/Solarized (light).sublime-color-scheme",
+	"color_scheme": "Solarized (dark).sublime-color-scheme",
 	"drag_text": false,
 	"ensure_newline_at_eof_on_save": true,
 	"file_exclude_patterns":
@@ -19,6 +19,9 @@
 	],
 	"folder_exclude_patterns":
 	[
+		"venv",
+		".mypy_cache",
+		".ruff_cache",
 		".svn",
 		".git",
 		".hg",
@@ -34,7 +37,7 @@
 		".pytest_cache",
 		"node_modules"
 	],
-	"font_size": 12,
+	"font_size": 14,
 	"highlight_line": true,
 	"ignored_packages":
 	[
