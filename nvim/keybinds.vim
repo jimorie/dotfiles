@@ -10,6 +10,8 @@ vnoremap i <Up>
 vnoremap k <Down>
 vnoremap j <Left>
 vnoremap l <Right>
+vnoremap I <Up>
+vnoremap K <Down>
 
 noremap h i
 noremap H I

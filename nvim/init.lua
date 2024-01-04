@@ -48,11 +48,19 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>hp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
 
         -- don't override the built-in and fugitive keymaps
         local gs = package.loaded.gitsigns
-        vim.keymap.set({ 'n', 'v' }, 'K', function()
+
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
+
+        -- Navigation
+        vim.keymap.set('n', 'K', function()
           if vim.wo.diff then
             return 'K'
           end
@@ -61,7 +69,7 @@ require('lazy').setup({
           end)
           return '<Ignore>'
         end, { expr = true, buffer = bufnr, desc = 'Jump to next hunk' })
-        vim.keymap.set({ 'n', 'v' }, 'I', function()
+        vim.keymap.set('n', 'I', function()
           if vim.wo.diff then
             return 'I'
           end
@@ -70,6 +78,19 @@ require('lazy').setup({
           end)
           return '<Ignore>'
         end, { expr = true, buffer = bufnr, desc = 'Jump to previous hunk' })
+
+        -- Actions
+        vim.keymap.set('n', '<leader>gs', gs.stage_hunk, { desc = 'Stage hunk' })
+        vim.keymap.set('n', '<leader>gr', gs.reset_hunk, { desc = 'Reset hunk' })
+        vim.keymap.set('n', '<leader>gu', gs.undo_stage_hunk, { desc = 'Undo stage hunk' })
+        vim.keymap.set('n', '<leader>gS', gs.stage_buffer, { desc = 'Stage buffer' })
+        vim.keymap.set('n', '<leader>gR', gs.reset_buffer, { desc = 'Reset buffer' })
+        vim.keymap.set('n', '<leader>gp', gs.preview_hunk, { desc = 'Preview hunk' })
+        vim.keymap.set('n', '<leader>gb', gs.toggle_current_line_blame, { desc = 'Blame line' })
+
+        -- Text object
+        vim.keymap.set({'o', 'x'}, 'hh', ':<C-U>Gitsigns select_hunk<CR>', { desc = 'Select current change hunk' })
+
       end,
     },
   },
@@ -309,11 +330,11 @@ vim.defer_fn(function()
         keymaps = {
           -- You can use the capture groups defined in textobjects.scm
           ['aa'] = '@parameter.outer',
-          ['ia'] = '@parameter.inner',
+          ['ha'] = '@parameter.inner',
           ['af'] = '@function.outer',
-          ['if'] = '@function.inner',
+          ['hf'] = '@function.inner',
           ['ac'] = '@class.outer',
-          ['ic'] = '@class.inner',
+          ['hc'] = '@class.inner',
         },
       },
       move = {
@@ -350,15 +371,15 @@ vim.defer_fn(function()
 end, 0)
 
 -- document existing key chains
-require('which-key').register {
-  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-  ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
-  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-  ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-}
+--require('which-key').register {
+--  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+--  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
+--  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+--  ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
+--  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+--  ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
+--  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+--}
 
 -- configure nvim-tree
 
@@ -379,6 +400,7 @@ require("nvim-tree").setup({
   },
   renderer = {
     group_empty = true,
+    symlink_destination = false,
   },
   modified = {
     enable = false,
