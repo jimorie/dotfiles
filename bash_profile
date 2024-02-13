@@ -19,6 +19,12 @@ alias u='cd -'
 
 alias cloc='grep -cve "^\s*$"'
 
+# Set terminal title based on SSH host
+
+echo -ne "\033[22;0t"                     #Save Title on Stack
+echo -ne "\033]0;${HOSTNAME}\007"         #Set New Title
+trap 'echo -ne "\033[23;0t"'  EXIT
+
 # Locale setup
 
 export LC_ALL=en_US.UTF-8
