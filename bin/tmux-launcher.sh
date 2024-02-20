@@ -34,8 +34,8 @@ exitcode=$?
 # Restore previous layout (Tmux full width option can screw it up)
 tmux select-layout "$layout"
 
-if $exitcode; then
-	exit $exitcode
+if [[ $exitcode ]]; then
+	exit 0
 fi
 
 # Get the selected args
