@@ -2,14 +2,14 @@
 
 # Project directories to search
 PROJECTS[0]=~/opsview
-PROJECTS[1]=~/Projects
+PROJECTS[1]=~/projects
 PROJECTS[2]=~
 
 # Formatting of Tmux windows
 LIST_DATA="#{p-2:window_index} 🖥  #{p40:window_name} #{pane_current_path}"
 
 # FZF command options
-FZF_COMMAND="fzf-tmux -b15 --delimiter=: --with-nth 6 --scheme=history --no-hscroll --cycle --color=16,border:241"
+FZF_COMMAND="fzf-tmux -b15 --delimiter=: --with-nth=6 --scheme=history --no-hscroll --cycle --color=16,border:241"
 
 # DO NOT CHANGE BELOW
 
