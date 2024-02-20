@@ -27,14 +27,14 @@ if [[ "$layout" =~ x$HEIGHT,0,[0-9]+,[0-9]+\]$ ]]; then
 fi
 
 # Run FZF
-selected=$((tmux list-windows -F "$TARGET_SPEC$LIST_DATA" | sort -r;find ${PROJECTS[@]} -not -name '.*' -type d -mindepth 1 -maxdepth 1|awk '{n=split($0,a,"/");printf "@:@:@:@:@:   📁 %-40s %s\n", a[n], $0}')| $FZF_COMMAND)
+selected=$((tmux list-windows -F "$TARGET_SPEC$LIST_DATA" | sort -r;find ${PROJECTS[@]} -mindepth 1 -maxdepth 1 -type d -not -name '.*'|awk '{n=split($0,a,"/");printf "@:@:@:@:@:   📁 %-40s %s\n", a[n], $0}')| $FZF_COMMAND)
 
 exitcode=$?
 
 # Restore previous layout (Tmux full width option can screw it up)
 tmux select-layout "$layout"
 
-if [[ $exitcode ]]; then
+if [[ $exitcode -gt 0 ]]; then
 	exit 0
 fi
 
