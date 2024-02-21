@@ -38,6 +38,7 @@ ln -s `pwd`/vim  $dir/.vim
 rm -f $dir/.vimrc
 ln -s `pwd`/vim/vimrc $dir/.vimrc
 
+mkdir -p $dir/.config
 rm -f $dir/.config/nvim
 ln -s `pwd`/nvim $dir/.config/nvim
 
