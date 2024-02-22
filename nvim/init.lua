@@ -112,10 +112,19 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
+        icons_enabled = true,
         theme = 'onedark',
         component_separators = '|',
         section_separators = '',
+        globalstatus = true,
+      },
+      sections = {
+        lualine_a = {'mode'},
+        lualine_b = { { 'filename', icons_enabled = true, path = 1 } },
+        lualine_c = {'diff', 'diagnostics'},
+        lualine_x = {'fileformat', 'encoding', 'filetype'},
+        lualine_y = {'progress'},
+        lualine_z = {'location'}
       },
     },
   },
