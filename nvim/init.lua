@@ -120,8 +120,8 @@ require('lazy').setup({
       },
       sections = {
         lualine_a = {'mode'},
-        lualine_b = { { 'filename', icons_enabled = true, path = 1 } },
-        lualine_c = {'diff', 'diagnostics'},
+        lualine_b = {'diff', 'diagnostics'},
+        lualine_c = { { 'filename', icons_enabled = true, path = 1, file_status = false } },
         lualine_x = {'fileformat', 'encoding', 'filetype'},
         lualine_y = {'progress'},
         lualine_z = {'location'}
