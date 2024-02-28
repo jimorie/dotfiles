@@ -107,6 +107,12 @@ require('lazy').setup({
             tabline = true,
             statusline = true,
         },
+        colors = {
+          bg1 = '#303030',  -- Matches my inactive tmux panes :)
+        },
+        highlights = {
+          ["CursorLineNr"] = { fg = '$orange', bg = '$bg1'},
+        }
       }
       vim.cmd.colorscheme 'onedark'
     end,
@@ -188,8 +194,11 @@ vim.o.hlsearch = true
 -- Make line numbers default
 vim.wo.number = true
 
--- Keep cursos at middle of screen
+-- Keep cursor at middle of screen
 vim.o.scrolloff = 999
+
+-- Highlight current line
+vim.o.cursorline = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
