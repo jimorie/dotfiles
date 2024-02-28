@@ -27,7 +27,7 @@ if [[ "$layout" =~ x$HEIGHT,0,[0-9]+,[0-9]+\]$ ]]; then
 fi
 
 # Run FZF
-selected=$((tmux list-windows -F "$TARGET_SPEC$LIST_DATA" | sort -r;find ${PROJECTS[@]} -mindepth 1 -maxdepth 1 -type d -not -name '.*'|awk '{n=split($0,a,"/");printf "@:@:@:@:@:   📁 %-40s %s\n", a[n], $0}')| $FZF_COMMAND)
+selected=$((tmux list-windows -F "$TARGET_SPEC$LIST_DATA" | sort -r;find ${PROJECTS[@]} -mindepth 1 -maxdepth 1 -type d -not -name '.*'|awk '{n=split($0,a,"/");printf "@:%s:%s:@:@:   📁 %-40s %s\n", a[n], $0, a[n], $0}') | $FZF_COMMAND)
 
 exitcode=$?
 
@@ -39,11 +39,13 @@ if [[ $exitcode -gt 0 ]]; then
 fi
 
 # Get the selected args
-args=(${selected//:/ })
+IFS=':'
+args=($selected)
+unset IFS
 
 if [[ ${args[0]} == "@" ]]; then
 	# Directory selected
-	tmux new-window -c ${args[7]} -n ${args[6]}
+	tmux new-window -c "${args[2]}" -n "${args[1]}"
 else
 	# Tmux window selected
 	tmux select-window -t ${args[3]} && tmux switch-client -t ${args[2]}
