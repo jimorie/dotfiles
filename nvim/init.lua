@@ -188,6 +188,9 @@ vim.o.hlsearch = true
 -- Make line numbers default
 vim.wo.number = true
 
+-- Keep cursos at middle of screen
+vim.o.scrolloff = 999
+
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
