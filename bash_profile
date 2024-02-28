@@ -156,6 +156,11 @@ if [[ -d "/Library/Java/JavaVirtualMachines/jdk1.8.0_341.jdk/Contents/Home" ]]; 
     PATH="$JAVA_HOME/bin":$PATH
 fi
 
+if [[ -d "/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home" ]]; then
+    export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home"
+    PATH="$JAVA_HOME/bin":$PATH
+fi
+
 # Rust setup
 
 if [[ -d "$HOME/.cargo" && ":$PATH:" != *"/Users/jimorie/.cargo/bin"* ]]; then
