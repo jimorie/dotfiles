@@ -108,7 +108,12 @@ require('lazy').setup({
             statusline = true,
         },
         colors = {
+          black = '#080808',
+          bg0 = '#1c1c1c',
           bg1 = '#303030',
+          bg2 = '#444444',
+          bg3 = '#585858',
+          bg4 = '#6c6c6c',
         },
         highlights = {
           ["CursorLineNr"] = { fg = '$orange' },
