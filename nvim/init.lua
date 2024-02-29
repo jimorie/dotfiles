@@ -108,10 +108,10 @@ require('lazy').setup({
             statusline = true,
         },
         colors = {
-          bg1 = '#303030',  -- Matches my inactive tmux panes :)
+          bg1 = '#303030',
         },
         highlights = {
-          ["CursorLineNr"] = { fg = '$orange', bg = '$bg1'},
+          ["CursorLineNr"] = { fg = '$orange' },
         }
       }
       vim.cmd.colorscheme 'onedark'
