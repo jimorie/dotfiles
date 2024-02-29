@@ -12,19 +12,22 @@ LIST_DATA="#{p-2:window_index} 🖥  #{p40:window_name} #{pane_current_path}"
 HEIGHT=15
 
 # FZF command options
-FZF_COMMAND="fzf-tmux -b$HEIGHT --delimiter=: --with-nth=6 --scheme=history --no-hscroll --cycle --color=16,border:241,bg:-1,bg+:-1"
+FZF_SCRIPT=~/bin/fzf-tmux
+FZF_COMMAND="$FZF_SCRIPT -b$HEIGHT --delimiter=: --with-nth=6 --scheme=history --no-hscroll --cycle --color=16,border:241,bg:-1,bg+:-1"
 
 # DO NOT CHANGE BELOW
 
 # Tmux windows meta data
 TARGET_SPEC="#{?window_active,0,1}:#{window_activity}:#{session_name}:#{window_id}:#{pane_id}:"
 
-# Remember current layout
-layout=$(tmux display-message -p "#{window_layout}")
-
-if [[ "$layout" =~ x$HEIGHT,0,[0-9]+,[0-9]+\]$ ]]; then
+# Prevent multiple launchers
+if [[ $(tmux show-options -p synchronize-panes) ]]; then
+	tmux display-message "One tmux-launcher is enough!"
 	exit 0
 fi
+
+# Remember current layout
+layout=$(tmux display-message -p "#{window_layout}")
 
 # Run FZF
 selected=$((tmux list-windows -F "$TARGET_SPEC$LIST_DATA" | sort -r;find ${PROJECTS[@]} -mindepth 1 -maxdepth 1 -type d -not -name '.*'|awk '{n=split($0,a,"/");printf "@:%s:%s:@:@:   📁 %-40s %s\n", a[n], $0, a[n], $0}') | $FZF_COMMAND)
