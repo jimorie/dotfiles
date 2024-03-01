@@ -116,6 +116,7 @@ require('lazy').setup({
           bg4 = '#6c6c6c',
         },
         highlights = {
+          ["CursorLine"] = { bg = '#141414' },
           ["CursorLineNr"] = { fg = '$orange' },
         }
       }
@@ -457,6 +458,26 @@ require("nvim-tree").setup({
 vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<cr>', { desc = 'Toggle nvim-tree' })
 
 vim.api.nvim_command('source ~/.config/nvim/keybinds.vim')
+
+-- Configure cursorline to only show when focused
+vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained" }, {
+  callback = function()
+    local ok, cl = pcall(vim.api.nvim_win_get_var, 0, "auto-cursorline")
+    if ok and cl then
+      vim.wo.cursorline = true
+      vim.api.nvim_win_del_var(0, "auto-cursorline")
+    end
+  end,
+})
+vim.api.nvim_create_autocmd({ "WinLeave", "FocusLost" }, {
+  callback = function()
+    local cl = vim.wo.cursorline
+    if cl then
+      vim.api.nvim_win_set_var(0, "auto-cursorline", cl)
+      vim.wo.cursorline = false
+    end
+  end,
+})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
