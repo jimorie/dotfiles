@@ -79,3 +79,6 @@ cnoreabbrev Wq wq
 cnoreabbrev WQ wq
 cnoreabbrev Cq wq
 cnoreabbrev CQ wq
+
+" Shift-Space is M-Space and Shift-Space is easily mistyped...
+inoremap <M-Space> <Space>
