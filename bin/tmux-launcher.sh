@@ -21,10 +21,12 @@ FZF_COMMAND="$FZF_SCRIPT -b$HEIGHT --delimiter=: --with-nth=6 --scheme=history -
 TARGET_SPEC="#{?window_active,0,1}:#{window_activity}:#{session_name}:#{window_id}:#{pane_id}:"
 
 # Prevent multiple launchers
-if [[ $(tmux show-options -p synchronize-panes) ]]; then
+if tmux show-environment IN_TMUX_LAUNCHER > /dev/null; then
 	tmux display-message "One tmux-launcher is enough!"
 	exit 0
 fi
+
+tmux set-environment IN_TMUX_LAUNCHER 1
 
 # Remember current layout
 layout=$(tmux display-message -p "#{window_layout}")
@@ -36,6 +38,9 @@ exitcode=$?
 
 # Restore previous layout (Tmux full width option can screw it up)
 tmux select-layout "$layout"
+
+# Clear is running flag
+tmux set-environment -u IN_TMUX_LAUNCHER
 
 if [[ $exitcode -gt 0 ]]; then
 	exit 0
