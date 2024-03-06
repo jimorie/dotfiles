@@ -111,6 +111,9 @@ if [ -f ~/.git-completion.bash ]; then
     . ~/.git-completion.bash
 fi
 
+# FZF setup
+export FZF_DEFAULT_OPTS="--color=16,border:241,bg:-1,bg+:-1 --cycle"
+
 # Pyenv setup
 if [[ -d "$HOME/.pyenv/bin" && ":$PATH:" != *":$HOME/.pyenv/bin:"* ]]; then
     PATH="$HOME/.pyenv/bin":$PATH
@@ -171,6 +174,7 @@ fi
 
 alias livehack='find . -name '\''*.py'\'' -exec mv -v '\''{}c'\'' '\''{}c.orig'\'' \;'
 alias liveunhack='find . -name '\''*.py'\'' -exec mv -v '\''{}c.orig'\'' '\''{}c'\'' \;'
+alias gr='_sel=( $(git review -l --color=never | sed -e "$ d" | fzf --no-sort --header="Selected change will be downloaded with git review -d") ) && git review -d ${_sel[0]}'
 
 # Envman setup
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
