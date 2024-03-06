@@ -200,8 +200,8 @@ vim.o.hlsearch = true
 -- Make line numbers default
 vim.wo.number = true
 
--- Keep cursor at middle of screen
-vim.o.scrolloff = 999
+-- Keep some lines around the cursor
+vim.o.scrolloff = 10
 
 -- Highlight current line
 vim.o.cursorline = true
