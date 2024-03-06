@@ -30,18 +30,26 @@ tmux set-environment IN_TMUX_LAUNCHER 1
 
 # Remember current layout
 layout=$(tmux display-message -p "#{window_layout}")
+zoomed=$(tmux display-message -p "#{window_zoomed_flag}")
 
 # Run FZF
 selected=$((tmux list-windows -F "$TARGET_SPEC$LIST_DATA" | sort -r;find ${PROJECTS[@]} -mindepth 1 -maxdepth 1 -type d -not -name '.*'|awk '{n=split($0,a,"/");printf "@:%s:%s:@:@:   📁 %-40s %s\n", a[n], $0, a[n], $0}') | $FZF_COMMAND)
 
 exitcode=$?
 
-# Restore previous layout (Tmux full width option can screw it up)
-tmux select-layout "$layout"
-
 # Clear is running flag
 tmux set-environment -u IN_TMUX_LAUNCHER
 
+# Restore previous layout (Tmux full width option can screw it up)
+newlayout=$(tmux display-message -p "#{window_layout}")
+if [[ "$newlayout" != "$layout" ]]; then
+	tmux select-layout "$layout"
+	if [[ $zoomed -gt 0 ]]; then
+		tmux resize-pane -Z
+	fi
+fi
+
+# Abort if FZF didn't exit cleanly
 if [[ $exitcode -gt 0 ]]; then
 	exit 0
 fi
