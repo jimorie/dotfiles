@@ -20,21 +20,40 @@ FZF_COMMAND="$FZF_SCRIPT -b$HEIGHT --delimiter=: --with-nth=6 --scheme=history -
 # Tmux windows meta data
 TARGET_SPEC="#{?window_active,0,1}:#{window_activity}:#{session_name}:#{window_id}:#{pane_id}:"
 
+# Cached projects file
+PROJECT_CACHE="${TMPDIR:-/tmp/}tmux-launcher-cache"
+
+# Parse command args
+refresh=0
+while [[ $# -gt 0 ]]; do
+	arg="$1"
+	shift
+	[[ -z "$skip" ]] && case "$arg" in
+	--refresh)
+		tmux set-environment -u IN_TMUX_LAUNCHER
+		refresh=1
+		;;
+	esac
+done
+
 # Prevent multiple launchers
 if tmux show-environment IN_TMUX_LAUNCHER > /dev/null; then
 	tmux display-message "One tmux-launcher is enough!"
 	exit 0
 fi
 
-tmux set-environment IN_TMUX_LAUNCHER 1
+# Populate project cache
+if [[ ! -f $PROJECT_CACHE || $refresh -gt 0 ]]; then
+	find ${PROJECTS[@]} -mindepth 1 -maxdepth 1 -type d -not -name '.*' | awk '{n=split($0,a,"/");printf "@:%s:%s:@:@:   📁 %-40s %s\n", a[n], $0, a[n], $0}' > $PROJECT_CACHE
+fi
 
 # Remember current layout
 layout=$(tmux display-message -p "#{window_layout}")
 zoomed=$(tmux display-message -p "#{window_zoomed_flag}")
 
 # Run FZF
-selected=$((tmux list-windows -F "$TARGET_SPEC$LIST_DATA" | sort -r;find ${PROJECTS[@]} -mindepth 1 -maxdepth 1 -type d -not -name '.*'|awk '{n=split($0,a,"/");printf "@:%s:%s:@:@:   📁 %-40s %s\n", a[n], $0, a[n], $0}') | $FZF_COMMAND)
-
+tmux set-environment IN_TMUX_LAUNCHER 1
+selected=$((tmux list-windows -F "$TARGET_SPEC$LIST_DATA" | sort -r;cat $PROJECT_CACHE) | $FZF_COMMAND)
 exitcode=$?
 
 # Clear is running flag
