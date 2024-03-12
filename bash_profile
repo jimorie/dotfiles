@@ -36,6 +36,27 @@ function pwb {
     git rev-parse --abbrev-ref HEAD 2>/dev/null
 }
 
+function shortpath()
+{
+    if [[ $1 = '~' ]]; then
+        echo $1
+    else
+        dir=$1
+        if [[ ${1:0:1} = '~' ]]; then
+            first="${1%%/*}/"
+            dir="/${1#*/}"
+        elif [[ ${1:0:1} = '/' ]]; then
+            first='/'
+        else
+            first=''
+        fi
+        dir=${dir%/*}
+        last=${1##*/}
+        res=$(for i in ${dir//\// } ; do echo -n "${i:0:1}…/" ; done)
+        echo "$first$res$last"
+    fi
+}
+
 function prompter() {
     # User color
     if [[ $(id -u) -eq 0 ]]; then
@@ -43,29 +64,38 @@ function prompter() {
     else
         usercolor="\[\033[00;32m\]"
     fi
-    # Git branch
-    br=`pwb`
-    if [[ ! -z $br ]]; then
-        if [[ ${#br} -gt 40 ]]; then
-            br="${br:0:39}…"
-        fi
-        br="\[\033[00;36m\] ⎇ $br"
-    fi
-    # Python virtualenv
-    if [[ -n $VIRTUAL_ENV ]]; then
-        venvroot=`dirname $VIRTUAL_ENV`
-        if [[ "$PWD/" = "$venvroot/"* ]]; then
-            venvroot=`basename $venvroot`
-            venvroot="\[\033[00;33m\] venv:${venvroot:0:32}";
-        else
-            venvroot=`basename $venvroot`
-            venvroot="\[\033[00;31m\] venv:${venvroot:0:32}";
-        fi
+    if [[ $COLUMNS -lt 79 ]]; then
+        # Make a short prompt
+        pt=$(shortpath `dirs`)
+        export PS1="\n$usercolor\u \[\033[01;34m\]$pt\n\[\033[01;30m\]\$\[\033[00m\] "
     else
-        venvroot=""
+        # Git branch
+        br=`pwb`
+        if [[ ! -z $br ]]; then
+            if [[ ${#br} -gt 40 ]]; then
+                br=$(shortpath $br)
+            fi
+            if [[ ${#br} -gt 40 ]]; then
+                br="${br:0:39}…"
+            fi
+            br="\[\033[00;36m\] ⎇ $br"
+        fi
+        # Python virtualenv
+        if [[ -n $VIRTUAL_ENV ]]; then
+            venvroot=`dirname $VIRTUAL_ENV`
+            if [[ "$PWD/" = "$venvroot/"* ]]; then
+                venvroot=`basename $venvroot`
+                venvroot="\[\033[00;33m\] venv";
+            else
+                venvroot=`basename $venvroot`
+                venvroot="\[\033[00;31m\] venv:${venvroot:0:32}";
+            fi
+        else
+            venvroot=""
+        fi
+        # Make it so!
+        export PS1="\n$usercolor\u@\h \[\033[01;34m\]\w$br$venvroot\n\[\033[01;30m\]\$\[\033[00m\] "
     fi
-    # Make it so!
-    export PS1="\n$usercolor\u@\h \[\033[01;34m\]\w$br$venvroot\n\[\033[01;30m\]\$\[\033[00m\] "
 }
 
 PROMPT_COMMAND=prompter
