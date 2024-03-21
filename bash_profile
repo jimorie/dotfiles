@@ -272,12 +272,16 @@ alias gc='git commit'
 alias gd='git diff'
 alias gf='git fetch'
 alias gg='git grep -n'
-alias gl='git --no-pager log -3'
+#alias gl='git --no-pager log -3'
 alias gs='git status'
 alias gp='git pull --ff-only'
 alias ga='git add -u;git status'
 alias gt='git checkout'
 alias git-cleanup='git remote prune origin;git branch -v|grep "\[gone\]"|cut -d" " -f3|xargs git branch -D'
+
+function gl() {
+    git --no-pager log --max-count ${1-3}
+}
 
 if [[ -d "/usr/local/git/bin" && ":$PATH:" != *":/usr/local/git/bin:"* ]]; then
     PATH="/usr/local/git/bin":$PATH
