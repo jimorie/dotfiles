@@ -17,7 +17,7 @@ alias la='ls -a'
 alias d='cd ..'
 alias u='cd -'
 
-alias cloc='grep -cve "^\s*$"'
+alias cdcase='cd `realpath .`'
 
 # Set terminal title based on SSH host
 
@@ -209,7 +209,7 @@ function chunky_prompter() {
     if [[ `uname` = "Darwin" ]]; then
         usericon=""
     else
-        usericon="󰌽"
+        usericon="󰻀"
     fi
     if [[ $(id -u) -eq 0 ]]; then
         bg=$COLOR_DIM_MAGENTA_ESC
