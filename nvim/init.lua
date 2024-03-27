@@ -137,12 +137,6 @@ require('lazy').setup({
       custom_theme.normal.a = {fg = '#ffffff', bg = vim.env.COLOR_DIM_GREEN}
       custom_theme.terminal.a = {fg = '#ffffff', bg = vim.env.COLOR_DIM_CYAN}
       custom_theme.replace.a = {fg = '#ffffff', bg = vim.env.COLOR_RED}
-      custom_theme.command.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_YELLOW}
-      custom_theme.insert.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_BLUE}
-      custom_theme.visual.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_MAGENTA}
-      custom_theme.normal.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_GREEN}
-      custom_theme.terminal.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_CYAN}
-      custom_theme.replace.z = {fg = '#ffffff', bg = vim.env.COLOR_RED}
 			-- Override 'encoding': Don't display if encoding is UTF-8.
 			encoding = function()
 				local ret, _ = (vim.bo.fenc or vim.go.enc):gsub("^utf%-8$", "")
@@ -153,6 +147,16 @@ require('lazy').setup({
 				local ret, _ = vim.bo.fileformat:gsub("^unix$", "")
 				return ret
 			end
+      branchfmt = function(name, context)
+        if #name < 20 then
+          return name
+        end
+        name = string.gsub(name, '^.*/', '…/')
+        if #name < 20 then
+          return name
+        end
+        return string.sub(name, 1, 19) .. "…"
+      end
       require('lualine').setup {
         options = {
           icons_enabled = true,
@@ -165,9 +169,9 @@ require('lazy').setup({
           lualine_a = {'mode'},
           lualine_b = {},
           lualine_c = { { 'filename', icons_enabled = true, path = 1, file_status = false } },
-          lualine_x = {fileformat, encoding, 'filetype'},
-          lualine_y = {{'branch', icon = '', color = {fg = '#ffffff', bg = vim.env.COLOR_DIM_CYAN}}},
-          lualine_z = {'location'}
+          lualine_x = {{'%B', padding = 0, fmt = function(s, c) return "0x" .. s end}, 'location'},
+          lualine_y = {fileformat, encoding, 'filetype'},
+          lualine_z = {{'branch', icon = '', color = {fg = '#ffffff', bg = vim.env.COLOR_DIM_CYAN}, fmt = branchfmt}},
        }
       }
     end,
