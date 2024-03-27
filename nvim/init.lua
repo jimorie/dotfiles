@@ -143,6 +143,16 @@ require('lazy').setup({
       custom_theme.normal.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_GREEN}
       custom_theme.terminal.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_CYAN}
       custom_theme.replace.z = {fg = '#ffffff', bg = vim.env.COLOR_RED}
+			-- Override 'encoding': Don't display if encoding is UTF-8.
+			encoding = function()
+				local ret, _ = (vim.bo.fenc or vim.go.enc):gsub("^utf%-8$", "")
+				return ret
+			end
+			-- fileformat: Don't display if &ff is unix.
+			fileformat = function()
+				local ret, _ = vim.bo.fileformat:gsub("^unix$", "")
+				return ret
+			end
       require('lualine').setup {
         options = {
           icons_enabled = true,
@@ -155,7 +165,7 @@ require('lazy').setup({
           lualine_a = {'mode'},
           lualine_b = {},
           lualine_c = { { 'filename', icons_enabled = true, path = 1, file_status = false } },
-          lualine_x = {'fileformat', 'encoding', 'filetype'},
+          lualine_x = {fileformat, encoding, 'filetype'},
           lualine_y = {{'branch', icon = '', color = {fg = '#ffffff', bg = vim.env.COLOR_DIM_CYAN}}},
           lualine_z = {'location'}
        }
