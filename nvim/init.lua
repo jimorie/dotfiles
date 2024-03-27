@@ -129,24 +129,38 @@ require('lazy').setup({
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = true,
-        theme = 'onedark',
-        component_separators = '|',
-        section_separators = '',
-        globalstatus = true,
-      },
-      sections = {
-        lualine_a = {'mode'},
-        lualine_b = {'diff', 'diagnostics'},
-        lualine_c = { { 'filename', icons_enabled = true, path = 1, file_status = false } },
-        lualine_x = {'fileformat', 'encoding', 'filetype'},
-        lualine_y = {'progress'},
-        lualine_z = {'location'}
-      },
-    },
+    config = function()
+      local custom_theme = require 'lualine.themes.onedark'
+      custom_theme.command.a = {fg = '#ffffff', bg = vim.env.COLOR_DIM_YELLOW}
+      custom_theme.insert.a = {fg = '#ffffff', bg = vim.env.COLOR_DIM_BLUE}
+      custom_theme.visual.a = {fg = '#ffffff', bg = vim.env.COLOR_DIM_MAGENTA}
+      custom_theme.normal.a = {fg = '#ffffff', bg = vim.env.COLOR_DIM_GREEN}
+      custom_theme.terminal.a = {fg = '#ffffff', bg = vim.env.COLOR_DIM_CYAN}
+      custom_theme.replace.a = {fg = '#ffffff', bg = vim.env.COLOR_RED}
+      custom_theme.command.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_YELLOW}
+      custom_theme.insert.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_BLUE}
+      custom_theme.visual.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_MAGENTA}
+      custom_theme.normal.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_GREEN}
+      custom_theme.terminal.z = {fg = '#ffffff', bg = vim.env.COLOR_DIM_CYAN}
+      custom_theme.replace.z = {fg = '#ffffff', bg = vim.env.COLOR_RED}
+      require('lualine').setup {
+        options = {
+          icons_enabled = true,
+          theme = custom_theme,
+          component_separators = '',
+          section_separators = {left ='▓▒░', right = '░▒▓'},
+          globalstatus = true,
+        },
+        sections = {
+          lualine_a = {'mode'},
+          lualine_b = {},
+          lualine_c = { { 'filename', icons_enabled = true, path = 1, file_status = false } },
+          lualine_x = {'fileformat', 'encoding', 'filetype'},
+          lualine_y = {{'branch', icon = '', color = {fg = '#ffffff', bg = vim.env.COLOR_DIM_CYAN}}},
+          lualine_z = {'location'}
+       }
+      }
+    end,
   },
 
   -- "gc" to comment visual regions/lines
