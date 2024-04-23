@@ -80,7 +80,14 @@ unset IFS
 
 if [[ ${args[0]} == "@" ]]; then
 	# Directory selected
-	tmux new-window -c "${args[2]}" -n "${args[1]}"
+	if `history -a /dev/stdout|wc -l` -lt "3"; then
+		# Brand new session, just go there
+		cd "${args[2]}"
+		tmux rename-window "${args[1]}"
+	else
+		# Otherwise go there in a new tmux window
+		tmux new-window -c "${args[2]}" -n "${args[1]}"
+	fi
 else
 	# Tmux window selected
 	tmux select-window -t ${args[3]} && tmux switch-client -t ${args[2]}
