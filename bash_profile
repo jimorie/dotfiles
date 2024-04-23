@@ -216,17 +216,17 @@ function chunky_prompter() {
     else
         bg=$COLOR_DIM_GREEN_ESC
     fi
-    prompt="${prompt}\[\033[48;${bg}m\]\[\033[38;${fg}m\] $usericon $userhost\[\033[38;${bg}m\]"
+    prompt="${prompt}\[\033[38;${bg}m\]󱎕\[\033[48;${bg}m\]\[\033[38;${fg}m\]$usericon $userhost\[\033[38;${bg}m\]"
     prompt="${prompt}"
 
     # Directory
     bg=$COLOR_DIM_BLUE_ESC
-    prompt="${prompt}\[\033[48;${bg}m\]▓▒░\[\033[38;${fg}m\] ${dir}\033[38;${bg}m\]"
+    prompt="${prompt}\[\033[48;${bg}m\] \[\033[38;${fg}m\] ${dir}\033[38;${bg}m\]"
 
     # Git branch
     if [[ $isnotgit -eq 0 ]]; then
 	bg=$COLOR_DIM_CYAN_ESC
-        prompt="${prompt}\[\033[48;${bg}m\]▓▒░\[\033[38;${fg}m\]${gitbr}\033[38;${bg}m\]"
+        prompt="${prompt}\[\033[48;${bg}m\] \[\033[38;${fg}m\]${gitbr}\033[38;${bg}m\]"
     fi
 
     # Python virtualenv
@@ -236,11 +236,11 @@ function chunky_prompter() {
 	else
 	    bg=$COLOR_DIM_RED_ESC
 	fi
-        prompt="${prompt}\[\033[48;${bg}m\]▓▒░\[\033[38;${fg}m\]󱔎${venvname}\033[38;${bg}m\]"
+        prompt="${prompt}\[\033[48;${bg}m\] \[\033[38;${fg}m\]󱔎${venvname}\033[38;${bg}m\]"
     fi
 
     # Make it so!
-    prompt="${prompt} \[\033[0m\]\[\033[38;${bg}m\]▓▒░\[\033[0m\]\n${promptchar} "
+    prompt="${prompt} \[\033[0m\]\[\033[38;${bg}m\] \[\033[0m\]\n${promptchar} "
     export PS1=$prompt
 }
 

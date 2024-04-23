@@ -111,7 +111,7 @@ require('lazy').setup({
           black = '#080808',
           bg0 = '#1c1c1c',
           bg1 = '#303030',
-          bg2 = '#444444',
+          bg2 = 'NONE',
           bg3 = '#585858',
           bg4 = '#6c6c6c',
         },
@@ -162,17 +162,17 @@ require('lazy').setup({
           icons_enabled = true,
           theme = custom_theme,
           component_separators = '',
-          section_separators = {left ='▓▒░', right = '░▒▓'},
+          section_separators = {left ='', right = '󱎕'},
           globalstatus = true,
         },
         sections = {
-          lualine_a = {'mode'},
-          lualine_b = {},
-          lualine_c = { { 'filename', icons_enabled = true, path = 1, file_status = false } },
+          lualine_a = {{ 'mode', separator = { left = '', right = '' }}},
+          lualine_b = {{ 'filename', icons_enabled = true, path = 1, file_status = false, separator = { right = ''}}},
+          lualine_c = {},
           lualine_x = {{'%B', padding = 0, fmt = function(s, c) return "0x" .. s end}, 'location'},
           lualine_y = {fileformat, encoding, 'filetype'},
-          lualine_z = {{'branch', icon = '', color = {fg = '#ffffff', bg = vim.env.COLOR_DIM_CYAN}, fmt = branchfmt}},
-       }
+          lualine_z = {{'branch', icon = '', color = {fg = '#ffffff', bg = vim.env.COLOR_DIM_CYAN}, fmt = branchfmt, separator = { left = '', right = '' }}},
+        }
       }
     end,
   },
