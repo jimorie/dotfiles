@@ -354,7 +354,7 @@ fi
 
 alias livehack='find . -name '\''*.py'\'' -exec mv -v '\''{}c'\'' '\''{}c.orig'\'' \;'
 alias liveunhack='find . -name '\''*.py'\'' -exec mv -v '\''{}c.orig'\'' '\''{}c'\'' \;'
-alias gr='_sel=( $(git review -l --color=always | sed -e "$ d" | fzf --ansi --no-sort --header="Selected change will be downloaded with git review -d" --color=header:red) ) && git review -d ${_sel[0]}'
+alias gr='_sel=( $(git review -l --color=always | sed -e "$ d" | fzf --ansi --no-sort --border-label="Select change to git review -d" --border=top --color=label:red) ) && git review -d ${_sel[0]}'
 
 # Envman setup
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
