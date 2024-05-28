@@ -216,7 +216,7 @@ function chunky_prompter() {
     else
         bg=$COLOR_DIM_GREEN_ESC
     fi
-    prompt="${prompt}\[\033[38;${bg}m\]󱎕\[\033[48;${bg}m\]\[\033[38;${fg}m\]$usericon $userhost\[\033[38;${bg}m\]"
+    prompt="${prompt}\[\033[38;${bg}m\]\[\033[48;${bg}m\]\[\033[38;${fg}m\]$usericon $userhost\[\033[38;${bg}m\]"
     prompt="${prompt}"
 
     # Directory

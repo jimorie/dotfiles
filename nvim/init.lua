@@ -162,7 +162,7 @@ require('lazy').setup({
           icons_enabled = true,
           theme = custom_theme,
           component_separators = '',
-          section_separators = {left ='', right = '󱎕'},
+          section_separators = {left ='', right = ''},
           globalstatus = true,
         },
         sections = {
