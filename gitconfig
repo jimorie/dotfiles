@@ -21,6 +21,7 @@
     force = push --force-with-lease
     pr = "!f() { git --no-pager log --pretty='format:* %s%n%n%b' origin..HEAD|sed 's/^\\([^*]\\)/    \\1/'|pbcopy && pbpaste; }; f"
     tag-for-release = "!f() { git tag -a `date +v%Y.%m.%d` -m `date +v%Y.%m.%d`; }; f"
+    ed = "!nvim $(git diff $1 --name-only)"
 [diff]
     algorithm = patience
 [color]
