@@ -173,36 +173,36 @@ function chunky_prompter() {
 
     # Python virtualenv
     if [[ -n $VIRTUAL_ENV ]]; then
-	venvroot=`dirname $VIRTUAL_ENV`
+        venvroot=`dirname $VIRTUAL_ENV`
         venvname=" `basename $venvroot`"
-	len=$((len + ${#venvname} + 4))
+        len=$((len + ${#venvname} + 4))
     else
         venvname=""
     fi
 
     # Do our best to shorten the prompt, as needed
     if [[ $len -gt $COLUMNS && -n $venvname ]]; then
-	len=$((len - ${#venvname}))
-	venvname=""
+        len=$((len - ${#venvname}))
+        venvname=""
     fi
 
     if [[ $len -gt $COLUMNS && -n $gitbr ]]; then
-	len=$((len - ${#gitbr}))
-	gitbr=" `shortdir $gitbr`"
-	len=$((len + ${#gitbr}))
-	if [[ $len -gt $COLUMNS ]]; then
-	    len=$((len - ${#gitbr}))
-	    gitbr=" ${gitbr:0:18}…"
-	    len=$((len + ${#gitbr}))
-	fi
-	if [[ $len -gt $COLUMNS ]]; then
-	    len=$((len - ${#gitbr}))
-	    gitbr=""
-	fi
+        len=$((len - ${#gitbr}))
+        gitbr=" `shortdir $gitbr`"
+        len=$((len + ${#gitbr}))
+        if [[ $len -gt $COLUMNS ]]; then
+            len=$((len - ${#gitbr}))
+            gitbr=" ${gitbr:0:18}…"
+            len=$((len + ${#gitbr}))
+        fi
+        if [[ $len -gt $COLUMNS ]]; then
+            len=$((len - ${#gitbr}))
+            gitbr=""
+        fi
     fi
 
     if [[ $len -gt $COLUMNS ]]; then
-	dir=`shortdir $dir`
+        dir=`shortdir $dir`
     fi
 
     # User+host
@@ -225,17 +225,17 @@ function chunky_prompter() {
 
     # Git branch
     if [[ $isnotgit -eq 0 ]]; then
-	bg=$COLOR_DIM_CYAN_ESC
+        bg=$COLOR_DIM_CYAN_ESC
         prompt="${prompt}\[\033[48;${bg}m\] \[\033[38;${fg}m\]${gitbr}\033[38;${bg}m\]"
     fi
 
     # Python virtualenv
     if [[ -n $VIRTUAL_ENV ]]; then
-	if [[ "$PWD/" = "$venvroot/"* ]]; then
-	    bg=$COLOR_DIM_YELLOW_ESC
-	else
-	    bg=$COLOR_DIM_RED_ESC
-	fi
+        if [[ "$PWD/" = "$venvroot/"* ]]; then
+            bg=$COLOR_DIM_YELLOW_ESC
+        else
+            bg=$COLOR_DIM_RED_ESC
+        fi
         prompt="${prompt}\[\033[48;${bg}m\] \[\033[38;${fg}m\]󱔎${venvname}\033[38;${bg}m\]"
     fi
 
@@ -291,15 +291,24 @@ if [ -f ~/.git-completion.bash ]; then
     . ~/.git-completion.bash
 fi
 
+function path_insert() {
+    if [[ -d "$1" ]]; then
+        # Delete path by parts so we can never accidentally remove sub paths
+        if [ "$PATH" == "$1" ] ; then PATH="" ; fi
+        PATH=${PATH//":$1:"/":"} # delete any instances in the middle
+        PATH=${PATH/#"$1:"/} # delete any instance at the beginning
+        PATH=${PATH/%":$1"/} # delete any instance in the at the end
+        PATH="$1":$PATH # insert the path at the beginning
+    fi
+}
+
 # FZF setup
 export FZF_DEFAULT_OPTS="--color=16,border:241,bg:-1,bg+:-1 --cycle"
 
 # Pyenv setup
-if [[ -d "$HOME/.pyenv/bin" && ":$PATH:" != *":$HOME/.pyenv/bin:"* ]]; then
-    PATH="$HOME/.pyenv/bin":$PATH
-    if which pyenv > /dev/null 2>&1;
-        then eval "$(pyenv init -)";
-    fi
+#path_insert "$HOME/.pyenv/bin"
+if which pyenv > /dev/null 2>&1;
+    then eval "$(pyenv init -)";
 fi
 
 # Pipenv setup
@@ -307,59 +316,46 @@ export PIPENV_VENV_IN_PROJECT=1
 
 # Go setup
 export GOPATH=$HOME/Projects/go
-if [[ -d "$GOPATH/bin" && ":$PATH:" != *":$GOPATH/bin:"* ]]; then
-    PATH="$GOPATH/bin":$PATH
-fi
+path_insert "$GOPATH/bin"
 
 # Poetry setup
-if [[ -d "$HOME/.poetry/bin" && ":$PATH:" != *":$HOME/.poetry/bin:"* ]]; then
-    PATH="$HOME/.poetry/bin":$PATH
-fi
+path_insert "$HOME/.poetry/bin"
 
 # Pipx setup
-if [[ -d "$HOME/.local/bin" && ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-    PATH="$HOME/.local/bin":$PATH
-fi
+path_insert "$HOME/.local/bin"
 
 # Brew setup
-if [[ -d "/usr/local/sbin" && ":$PATH:" != *":/usr/local/sbin:"* ]]; then
-    PATH="/usr/local/sbin":$PATH
-fi
+path_insert "/usr/local/sbin"
+path_insert "/opt/homebrew/bin"
 
 # Home bin setup
-
-if [[ -d "$HOME/bin" && ":$PATH:" != *":$HOME/bin:"* ]]; then
-    PATH="$HOME/bin":$PATH
-fi
+path_insert "$HOME/bin"
 
 # Java setup
-
 if [[ -d "/Library/Java/JavaVirtualMachines/jdk1.8.0_341.jdk/Contents/Home" ]]; then
     export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_341.jdk/Contents/Home"
-    PATH="$JAVA_HOME/bin":$PATH
+    path_insert "$JAVA_HOME/bin"
 fi
 
 if [[ -d "/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home" ]]; then
     export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home"
-    PATH="$JAVA_HOME/bin":$PATH
+    path_insert "$JAVA_HOME/bin"
 fi
 
 if [[ -d "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home" ]]; then
     export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home"
-    PATH="$JAVA_HOME/bin":$PATH
+    path_insert "$JAVA_HOME/bin"
 fi
 
 # Rust setup
-
 if [[ -d "$HOME/.cargo" && ":$PATH:" != *"/Users/jimorie/.cargo/bin"* ]]; then
     source "$HOME/.cargo/env"
 fi
 
 # Opsview setup
-
 alias livehack='find . -name '\''*.py'\'' -exec mv -v '\''{}c'\'' '\''{}c.orig'\'' \;'
 alias liveunhack='find . -name '\''*.py'\'' -exec mv -v '\''{}c.orig'\'' '\''{}c'\'' \;'
 alias gr='_sel=( $(git review -l --color=always | sed -e "$ d" | fzf --ansi --no-sort --border-label="Select change to git review -d" --border=top --color=label:red) ) && git review -d ${_sel[0]}'
 
 # Envman setup
-[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+#[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
