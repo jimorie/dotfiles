@@ -254,6 +254,7 @@ if [[ -n $VIRTUAL_ENV ]]; then
         unset VIRTUAL_ENV
     fi
 fi
+alias pytags='ctags -R --languages=python . $(python -c "import sys;print(\" \".join(p for p in reversed(sys.path) if p and not p.endswith(\".zip\")))")'
 
 # Sublime text setup
 
