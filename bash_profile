@@ -333,20 +333,19 @@ path_insert "/opt/homebrew/bin"
 path_insert "$HOME/bin"
 
 # Java setup
-if [[ -d "/Library/Java/JavaVirtualMachines/jdk1.8.0_341.jdk/Contents/Home" ]]; then
-    export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_341.jdk/Contents/Home"
-    path_insert "$JAVA_HOME/bin"
-fi
-
-if [[ -d "/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home" ]]; then
-    export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home"
-    path_insert "$JAVA_HOME/bin"
-fi
-
 if [[ -d "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home" ]]; then
     export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home"
     path_insert "$JAVA_HOME/bin"
 fi
+
+if [[ -d "$HOME/.sdkman/candidates/java" ]]; then
+    export JAVA_HOME="$HOME/.sdkman/candidates/java/current"
+    path_insert "$JAVA_HOME/bin"
+fi
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # Rust setup
 if [[ -d "$HOME/.cargo" && ":$PATH:" != *"/Users/jimorie/.cargo/bin"* ]]; then
