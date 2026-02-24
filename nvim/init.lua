@@ -228,6 +228,23 @@ require('lazy').setup({
 			end
 	},
 
+  {
+    "supermaven-inc/supermaven-nvim",
+    config = function()
+      require("supermaven-nvim").setup({
+        keymaps = {
+          accept_suggestion = "<Tab>",
+          clear_suggestion = "<S-Tab>",
+          accept_word = "<C-k>",
+        },
+        color = {
+          suggestion_color = "#5f5f87",
+          cterm = 60,
+        },
+      })
+    end,
+  },
+
 }, {})
 
 -- [[ Setting options ]]
