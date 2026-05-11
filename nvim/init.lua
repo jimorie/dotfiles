@@ -118,13 +118,14 @@ require('lazy').setup({
         highlights = {
           ["CursorLine"] = { bg = '#141414' },
           ["CursorLineNr"] = { fg = '$orange' },
+          -- Does not seem to work, but would be nice to have...
+          -- ["NvimTreeOpenedFile"] = { fg = '$orange' },
+          -- ["NvimTreeOpenedHL"] = { fg = '$orange' },
         }
       }
       vim.cmd.colorscheme 'onedark'
     end,
   },
-
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 
   {
     -- Set lualine as statusline
@@ -245,6 +246,7 @@ require('lazy').setup({
     end,
   },
 
+  'Vimjas/vim-python-pep8-indent',
 }, {})
 
 -- [[ Setting options ]]
@@ -422,7 +424,7 @@ vim.defer_fn(function()
     auto_install = false,
 
     highlight = { enable = true },
-    indent = { enable = true },
+    indent = { enable = true; disable = { "python" } },
     incremental_selection = {
       enable = true,
       keymaps = {
@@ -519,6 +521,9 @@ require("nvim-tree").setup({
     custom = {"__pycache__"},
   },
   hijack_cursor = true,
+  update_focused_file = {
+    enable = true,
+  },
 })
 
 vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<cr>', { desc = 'Toggle nvim-tree' })
