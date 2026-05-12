@@ -65,6 +65,8 @@ export COLOR_DIM_BLUE_ESC=`color_hex_to_esc $COLOR_DIM_BLUE`
 export COLOR_DIM_MAGENTA_ESC=`color_hex_to_esc $COLOR_DIM_MAGENTA`
 export COLOR_DIM_CYAN_ESC=`color_hex_to_esc $COLOR_DIM_CYAN`
 
+export BAT_THEME=TwoDark
+
 # Prompt setup
 
 function pwb {

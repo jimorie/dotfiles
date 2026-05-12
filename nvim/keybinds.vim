@@ -18,11 +18,13 @@ noremap H I
 
 " Ctrl-modifier
 nnoremap <C-i> 5<Up>
+nnoremap <Tab> 5<Up>
 nnoremap <C-k> 5<Down>
 nnoremap <C-j> <S-Left>
 nnoremap <C-l> <S-Right>
 
 vnoremap <C-i> 5<Up>
+vnoremap <Tab> 5<Up>
 vnoremap <C-k> 5<Down>
 vnoremap <C-j> <S-Left>
 vnoremap <C-l> <S-Right>

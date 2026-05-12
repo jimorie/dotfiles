@@ -181,25 +181,13 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
-  -- Fuzzy Finder (files, lsp, etc)
   {
-    'nvim-telescope/telescope.nvim',
-    branch = '0.1.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-      -- Only load if `make` is available. Make sure you have the system
-      -- requirements installed.
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        -- NOTE: If you are having trouble with this installation,
-        --       refer to the README for telescope-fzf-native for more instructions.
-        build = 'make',
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
-      },
-    },
+    "ibhagwan/fzf-lua",
+    -- optional for icon support
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    -- or if using mini.icons/mini.nvim
+    -- dependencies = { "nvim-mini/mini.icons" },
+    opts = {},
   },
 
   {
@@ -306,12 +294,6 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- Diagnostic keymaps
---vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
---vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -323,100 +305,136 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
--- [[ Configure Telescope ]]
--- See `:help telescope` and `:help telescope.setup()`
-require('telescope').setup {
-  defaults = {
-    mappings = {
-      i = {
-        ['<C-u>'] = false,
-        ['<C-d>'] = false,
+-- [[ Configure fzf-lua ]]
+local fzf_lua = require "fzf-lua"
+local fzf_utils = require "fzf-lua.utils"
+
+local function selection_or_cword()
+  local selection = fzf_utils.mode_is_visual() and fzf_utils.get_visual_selection() or nil
+
+  if selection and selection ~= "" then
+    return selection
+  end
+
+  return vim.fn.expand("<cword>")
+end
+
+fzf_lua.setup {
+  defaults = { git_icons = false },
+  fzf_opts = {
+    ['--layout'] = 'default',
+  },
+  winopts = {
+    treesitter = false,
+    preview = {
+      default = "bat", -- Requires 'bat' installed on your system
+    },
+  },
+  previewers = {
+    builtin = {
+      treesitter = {
+        enabled = false,
       },
     },
   },
-  pickers = {
-    buffers = {
-      ignore_current_buffer = true,
-      sort_lastused = true,
-      sort_mru = true,
+  buffers = {
+    filename_only = false,
+    ignore_current_buffer = true,
+  },
+  grep = {
+    follow = true,
+    no_esc = true,
+    actions = {
+      ["ctrl-g"] = false,
     },
-    find_files = {
-      follow = true,
+    fzf_opts = {
+      ["--disabled"] = true,
     },
-    live_grep = {
-      additional_args = {'--follow'},
+  },
+  tags = {
+    follow = true,
+    actions = {
+      ["ctrl-g"] = false,
     },
-    grep_string = {
-      additional_args = {'--follow'},
+  },
+  lsp = {
+    workspace_symbols = {
+      actions = {
+        ["ctrl-g"] = false,
+      },
+    },
+  },
+  files = {
+    follow = true,
+    formatter = "path.filename_first",
+  },
+  keymap = {
+    fzf = {
+      ["ctrl-c"] = "abort",
     },
   },
 }
 
--- Enable telescope fzf native, if installed
-pcall(require('telescope').load_extension, 'fzf')
+local find_project_definitions
 
--- Telescope live_grep in git root
--- Function to find the git root directory based on the current buffer's path
-local function find_git_root()
-  -- Use the current buffer's path as the starting point for the git search
-  local current_file = vim.api.nvim_buf_get_name(0)
-  local current_dir
-  local cwd = vim.fn.getcwd()
-  -- If the buffer is not associated with a file, return nil
-  if current_file == "" then
-    current_dir = cwd
-  else
-    -- Extract the directory from the current file's path
-    current_dir = vim.fn.fnamemodify(current_file, ":h")
-  end
-
-  -- Find the Git root directory from the current file's path
-  local git_root = vim.fn.systemlist("git -C " .. vim.fn.escape(current_dir, " ") .. " rev-parse --show-toplevel")[1]
-  if vim.v.shell_error ~= 0 then
-    print("Not a git repository. Searching on current working directory")
-    return cwd
-  end
-  return git_root
-end
-
--- Custom live_grep function to search in git root
-local function live_grep_git_root()
-  local git_root = find_git_root()
-  if git_root then
-    require('telescope.builtin').live_grep({
-      search_dirs = {git_root},
-    })
-  end
-end
-
-vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
-
--- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<C-p>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<leader>/', function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
-  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 10,
-    previewer = false,
+local function find_buffers_and_files()
+  fzf_lua.combine({
+    pickers = 'buffers;files',
+    formatter = "path.filename_first",
+    actions = {
+      ["ctrl-g"] = function(_, opts)
+        fzf_lua.live_grep({ regex = opts.last_query })
+      end,
+      ["ctrl-o"] = function()
+        fzf_lua.jumps()
+      end,
+      ["ctrl-t"] = function()
+        find_project_definitions()
+      end,
+    },
   })
-end, { desc = '[/] Fuzzily search in current buffer' })
+end
 
-vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+find_project_definitions = function(opts)
+  if vim.fn.executable("ctags") == 0 then
+    vim.notify("ctags executable not found", vim.log.levels.WARN)
+    return
+  end
+
+  if vim.fn.executable("rg") == 0 then
+    vim.notify("rg executable not found", vim.log.levels.WARN)
+    return
+  end
+
+  opts = opts or {}
+  local ctags_cmd = "rg --files --follow -g '*.py' | ctags -L - -f - --fields=+n --extra=+q --sort=no --python-kinds=+cfmv-i 2>/dev/null"
+
+  return fzf_lua.tags(vim.tbl_deep_extend("force", {
+    cwd = vim.uv.cwd(),
+    cmd = ctags_cmd,
+    ctags_autogen = true,
+    previewer = "bat",
+    file_icons = false,
+    silent = true,
+    actions = {
+      ["ctrl-g"] = false,
+    },
+  }, opts))
+end
+
+vim.keymap.set({"n", "v"}, "<C-p>", find_buffers_and_files, { desc = 'Fuzzy find buffers and files' })
+vim.keymap.set({"n", "v"}, "<C-t>", function()
+  find_project_definitions({ query = selection_or_cword() })
+end, { desc = 'Find project definitions' })
+vim.keymap.set({"n", "v"}, "<C-g>", function()
+  fzf_lua.live_grep({ query = selection_or_cword() })
+end, { desc = 'Live grep selection or word' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
 vim.defer_fn(function()
-  require('nvim-treesitter.configs').setup {
+  require('nvim-treesitter').setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
 
