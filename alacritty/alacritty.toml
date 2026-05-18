@@ -1,0 +1,60 @@
+[font]
+size = 17.0
+
+[font.bold]
+family = "Hack Nerd Font Mono"
+style = "Regular"
+
+[font.italic]
+family = "Hack Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "Hack Nerd Font Mono"
+style = "Regular"
+
+[font.bold_italic]
+family = "Hack Nerd Font Mono"
+style = "Italic"
+
+[colors.primary]
+foreground = "#feffff"
+background = "#1c1c1c"
+
+[colors.bright]
+black = "#5b636f"
+red = "#e86670"
+green = "#a2e572"
+yellow = "#e4d594"
+blue = "#60aeed"
+magenta = "#c578dc"
+cyan = "#78dce8"
+white = "#feffff"
+
+[colors.normal]
+black = "#080200"
+red = "#d78787"
+green = "#97c378"
+yellow = "#d09a65"
+blue = "#00afff"
+magenta = "#c578dc"
+cyan = "#54b3be"
+white = "#e7e7e7"
+
+[colors.cursor]
+cursor = "#feffff"
+text = "#080200"
+
+[selection]
+save_to_clipboard = true
+
+[window]
+decorations = "Full"
+
+[cursor]
+style = { shape = "Block", blinking = "Always" }
+
+[keyboard]
+bindings = [
+    { key = "Enter", mods = "Command", action = "ToggleFullscreen"},
+]

@@ -42,6 +42,9 @@ mkdir -p $dir/.config
 rm -f $dir/.config/nvim
 ln -s `pwd`/nvim $dir/.config/nvim
 
+rm -f $dir/.config/alacritty
+ln -s `pwd`/alacritty $dir/.config/alacritty
+
 if [ ! -f "$dir/.gitconfig" ]; then
     echo "[include]" >> $dir/.gitconfig
     echo "    path = $(pwd)/gitconfig" >> $dir/.gitconfig
