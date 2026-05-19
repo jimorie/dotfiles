@@ -57,4 +57,6 @@ style = { shape = "Block", blinking = "Always" }
 [keyboard]
 bindings = [
     { key = "Enter", mods = "Command", action = "ToggleFullscreen"},
+    { key = "Enter", mods = "Super", action = "ToggleFullscreen"},
+    { key = "Backspace", mods = "Control", chars = "\u007f"},
 ]
