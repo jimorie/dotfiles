@@ -354,11 +354,10 @@ if [[ -d "$HOME/.cargo" && ":$PATH:" != *"/Users/jimorie/.cargo/bin"* ]]; then
     source "$HOME/.cargo/env"
 fi
 
-# Opsview setup
+# VCC setup
+alias gr='_sel=( $(git review -l --color=always | sed -e "$ d" | fzf --ansi --no-sort --border-label="Select change to git review -d" --border=top --color=label:red) ) && git review -d ${_sel[0]}'
 alias livehack='find . -name '\''*.py'\'' -exec mv -v '\''{}c'\'' '\''{}c.orig'\'' \;'
 alias liveunhack='find . -name '\''*.py'\'' -exec mv -v '\''{}c.orig'\'' '\''{}c'\'' \;'
-alias gr='_sel=( $(git review -l --color=always | sed -e "$ d" | fzf --ansi --no-sort --border-label="Select change to git review -d" --border=top --color=label:red) ) && git review -d ${_sel[0]}'
-alias ovmysql='export DBPASS=`sudo cat /opt/opsview/deploy/etc/user_secrets.yml|grep opsview_database_root_password|awk -F" " '"'"'{ print $2; }'"'"'` && mysql -uroot -p$DBPASS'
 
-# Envman setup
-#[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+# TokenUpdater
+path_insert "$HOME/.local/TokenUpdater"

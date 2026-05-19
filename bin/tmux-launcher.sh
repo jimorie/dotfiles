@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Project directories to search
-PROJECTS[0]=~/opsview
+PROJECTS[0]=~/vcc
 PROJECTS[1]=~/projects
 PROJECTS[2]=~
 
