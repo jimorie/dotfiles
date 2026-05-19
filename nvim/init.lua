@@ -309,14 +309,17 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 local fzf_lua = require "fzf-lua"
 local fzf_utils = require "fzf-lua.utils"
 
-local function selection_or_cword()
+local function selection_or_cword(boundary)
   local selection = fzf_utils.mode_is_visual() and fzf_utils.get_visual_selection() or nil
 
-  if selection and selection ~= "" then
-    return selection
+  if not selection then
+    selection = vim.fn.expand("<cword>")
+    if selection and selection ~= "" and boundary then
+      selection = "\\b" .. selection .. "\\b"
+    end
   end
 
-  return vim.fn.expand("<cword>")
+  return selection
 end
 
 fzf_lua.setup {
@@ -339,7 +342,7 @@ fzf_lua.setup {
   },
   buffers = {
     filename_only = false,
-    ignore_current_buffer = true,
+    -- ignore_current_buffer = true,
   },
   grep = {
     follow = true,
@@ -366,7 +369,7 @@ fzf_lua.setup {
   },
   files = {
     follow = true,
-    formatter = "path.filename_first",
+    -- formatter = "path.filename_first",
   },
   keymap = {
     fzf = {
@@ -380,7 +383,7 @@ local find_project_definitions
 local function find_buffers_and_files()
   fzf_lua.combine({
     pickers = 'buffers;files',
-    formatter = "path.filename_first",
+    -- formatter = "path.filename_first",
     actions = {
       ["ctrl-g"] = function(_, opts)
         fzf_lua.live_grep({ regex = opts.last_query })
@@ -424,10 +427,10 @@ end
 
 vim.keymap.set({"n", "v"}, "<C-p>", find_buffers_and_files, { desc = 'Fuzzy find buffers and files' })
 vim.keymap.set({"n", "v"}, "<C-t>", function()
-  find_project_definitions({ query = selection_or_cword() })
+  find_project_definitions({ query = selection_or_cword(false) })
 end, { desc = 'Find project definitions' })
 vim.keymap.set({"n", "v"}, "<C-g>", function()
-  fzf_lua.live_grep({ query = selection_or_cword() })
+  fzf_lua.live_grep({ regex = selection_or_cword(true) })
 end, { desc = 'Live grep selection or word' })
 
 -- [[ Configure Treesitter ]]
