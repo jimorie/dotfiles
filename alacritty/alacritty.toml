@@ -52,7 +52,7 @@ style = { shape = "Block", blinking = "Always" }
 
 [keyboard]
 bindings = [
-    { key = "Enter", mods = "Command", action = "ToggleFullscreen"},
+    # Appears that Super also works for Command on MacOS
     { key = "Enter", mods = "Super", action = "ToggleFullscreen"},
     { key = "Backspace", mods = "Control", chars = "\u007f"},
 ]
