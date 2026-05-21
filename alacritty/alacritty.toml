@@ -21,25 +21,21 @@ style = "Italic"
 foreground = "#feffff"
 background = "#1c1c1c"
 
-[colors.bright]
-black = "#5b636f"
-red = "#e86670"
-green = "#a2e572"
-yellow = "#e4d594"
-blue = "#60aeed"
-magenta = "#c578dc"
-cyan = "#78dce8"
-white = "#feffff"
-
 [colors.normal]
-black = "#080200"
-red = "#d78787"
-green = "#97c378"
-yellow = "#d09a65"
-blue = "#00afff"
-magenta = "#c578dc"
-cyan = "#54b3be"
-white = "#e7e7e7"
+red="#e06c75"
+green="#98c379"
+yellow="#e5c07b"
+blue="#61afef"
+magenta="#c678dd"
+cyan="#56b6c2"
+
+[colors.bright]
+red="#b2574b"
+green="#78a557"
+yellow="#ca9b6e"
+blue="#518bbb"
+magenta="#976ca5"
+cyan="#46919a"
 
 [colors.cursor]
 cursor = "#feffff"
