@@ -6,7 +6,7 @@ PROJECTS[1]=~/projects
 PROJECTS[2]=~
 
 # Formatting of Tmux windows
-LIST_DATA="#{p-2:window_index} 🖥  #{p40:window_name} #{pane_current_path}"
+LIST_DATA="#{p-2:window_index} 🖵  #{p40:window_name} #{pane_current_path}"
 
 # Height of FZF pane
 HEIGHT=15
@@ -46,7 +46,7 @@ fi
 
 # Populate project cache
 if [[ ! -f $PROJECT_CACHE || $refresh -gt 0 ]]; then
-	find ${PROJECTS[@]} -mindepth 1 -maxdepth 1 -type d -not -name '.*' | awk '{n=split($0,a,"/");printf "@:%s:%s:@:@:   📁 %-40s %s\n", a[n], $0, a[n], $0}' > $PROJECT_CACHE
+	find ${PROJECTS[@]} -mindepth 1 -maxdepth 1 -type d -not -name '.*' | awk '{n=split($0,a,"/");printf "@:%s:%s:@:@:   🖿  %-40s %s\n", a[n], $0, a[n], $0}' > $PROJECT_CACHE
 fi
 
 # Remember current layout
