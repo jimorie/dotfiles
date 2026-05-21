@@ -309,9 +309,9 @@ function path_insert() {
 export FZF_DEFAULT_OPTS="--color=16,border:241,bg:-1,bg+:-1 --cycle"
 
 # Pyenv setup
-#path_insert "$HOME/.pyenv/bin"
-if which pyenv > /dev/null 2>&1;
-    then eval "$(pyenv init -)";
+if [ -z "$PYENV_INITIALIZED" ] && command -v pyenv >/dev/null 2>&1; then
+  export PYENV_INITIALIZED=1
+  eval "$(pyenv init -)"
 fi
 
 # Pipenv setup
