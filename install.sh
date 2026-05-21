@@ -41,6 +41,7 @@ ln -s `pwd`/vim/vimrc $dir/.vimrc
 mkdir -p $dir/.config
 rm -f $dir/.config/nvim
 ln -s `pwd`/nvim $dir/.config/nvim
+ln -s `which nvim` $dir/bin/vim
 
 rm -f $dir/.config/alacritty
 ln -s `pwd`/alacritty $dir/.config/alacritty
