@@ -322,8 +322,54 @@ local function selection_or_cword(boundary)
   return selection
 end
 
+find_project_definitions = function(opts)
+  if vim.fn.executable("ctags") == 0 then
+    vim.notify("ctags executable not found", vim.log.levels.WARN)
+    return
+  end
+
+  if vim.fn.executable("rg") == 0 then
+    vim.notify("rg executable not found", vim.log.levels.WARN)
+    return
+  end
+
+  opts = opts or {}
+  local ctags_cmd = "rg --files --follow -g '*.py' | ctags -L - -f - --fields=+n --extra=+q --sort=no --python-kinds=+cfmv-i 2>/dev/null"
+
+  return fzf_lua.tags(vim.tbl_deep_extend("force", {
+    cwd = vim.uv.cwd(),
+    cmd = ctags_cmd,
+    ctags_autogen = true,
+    -- previewer = "bat",
+    file_icons = false,
+    silent = true,
+    actions = {
+      ["ctrl-g"] = false,
+    },
+  }, opts))
+end
+
 fzf_lua.setup {
-  defaults = { git_icons = false },
+  defaults = {
+    git_icons = false,
+    actions = {
+      ["ctrl-b"] = function(_, opts)
+        fzf_lua.buffers({ query = opts.last_query })
+      end,
+      ["ctrl-f"] = function(_, opts)
+        fzf_lua.files({ query = opts.last_query })
+      end,
+      ["ctrl-g"] = function(_, opts)
+        fzf_lua.live_grep({ regex = opts.last_query })
+      end,
+      ["ctrl-o"] = function()
+        fzf_lua.jumps()
+      end,
+      ["ctrl-t"] = function(_, opts)
+        find_project_definitions({ query = opts.last_query })
+      end,
+    },
+  },
   fzf_opts = {
     ['--layout'] = 'default',
   },
@@ -378,54 +424,7 @@ fzf_lua.setup {
   },
 }
 
-local find_project_definitions
-
-local function find_buffers_and_files()
-  fzf_lua.combine({
-    pickers = 'buffers;files',
-    -- formatter = "path.filename_first",
-    actions = {
-      ["ctrl-g"] = function(_, opts)
-        fzf_lua.live_grep({ regex = opts.last_query })
-      end,
-      ["ctrl-o"] = function()
-        fzf_lua.jumps()
-      end,
-      ["ctrl-t"] = function()
-        find_project_definitions()
-      end,
-    },
-  })
-end
-
-find_project_definitions = function(opts)
-  if vim.fn.executable("ctags") == 0 then
-    vim.notify("ctags executable not found", vim.log.levels.WARN)
-    return
-  end
-
-  if vim.fn.executable("rg") == 0 then
-    vim.notify("rg executable not found", vim.log.levels.WARN)
-    return
-  end
-
-  opts = opts or {}
-  local ctags_cmd = "rg --files --follow -g '*.py' | ctags -L - -f - --fields=+n --extra=+q --sort=no --python-kinds=+cfmv-i 2>/dev/null"
-
-  return fzf_lua.tags(vim.tbl_deep_extend("force", {
-    cwd = vim.uv.cwd(),
-    cmd = ctags_cmd,
-    ctags_autogen = true,
-    previewer = "bat",
-    file_icons = false,
-    silent = true,
-    actions = {
-      ["ctrl-g"] = false,
-    },
-  }, opts))
-end
-
-vim.keymap.set({"n", "v"}, "<C-p>", find_buffers_and_files, { desc = 'Fuzzy find buffers and files' })
+vim.keymap.set({"n", "v"}, "<C-p>", fzf_lua.buffers, { desc = 'Fuzzy find buffers and files' })
 vim.keymap.set({"n", "v"}, "<C-t>", function()
   find_project_definitions({ query = selection_or_cword(false) })
 end, { desc = 'Find project definitions' })
