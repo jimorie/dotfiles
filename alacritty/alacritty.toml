@@ -55,4 +55,6 @@ bindings = [
     # Appears that Super also works for Command on MacOS
     { key = "Enter", mods = "Super", action = "ToggleFullscreen"},
     { key = "Backspace", mods = "Control", chars = "\u007f"},
+    { key = "Backspace", mods = "Alt", chars = "\uE000"},  # Hack that my tmux.conf understands...
+    { key = "Space", mods = "Alt", chars = "\u001b "},
 ]
