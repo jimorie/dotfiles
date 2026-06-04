@@ -352,12 +352,13 @@ end
 fzf_lua.setup {
   defaults = {
     git_icons = false,
+    prompt = '❯ ',
     actions = {
       ["ctrl-b"] = function(_, opts)
         fzf_lua.buffers({ query = opts.last_query })
       end,
       ["ctrl-f"] = function(_, opts)
-        fzf_lua.files({ query = opts.last_query })
+        fzf_lua.files({ query = opts.last_query, cwd_prompt = false })
       end,
       ["ctrl-g"] = function(_, opts)
         fzf_lua.live_grep({ regex = opts.last_query })
@@ -376,6 +377,9 @@ fzf_lua.setup {
   winopts = {
     treesitter = false,
     preview = {
+      layout = "flex",
+      flip_columns = 200,
+      vertical = "up:66%",
       default = "bat", -- Requires 'bat' installed on your system
     },
   },

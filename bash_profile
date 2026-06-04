@@ -51,6 +51,11 @@ export COLOR_DIM_BLUE="#518BBB"
 export COLOR_DIM_MAGENTA="#976CA5"
 export COLOR_DIM_CYAN="#46919A"
 
+export COLOR_FG="#feffff"
+export COLOR_DIM_FG="#ddeeee"
+export COLOR_BG="#1c1c1c"
+export COLOR_DIM_BG="#2c2c2c"
+
 export COLOR_RED_ESC=`color_hex_to_esc $COLOR_RED`
 export COLOR_GREEN_ESC=`color_hex_to_esc $COLOR_GREEN`
 export COLOR_YELLOW_ESC=`color_hex_to_esc $COLOR_YELLOW`
@@ -306,7 +311,14 @@ function path_insert() {
 }
 
 # FZF setup
-export FZF_DEFAULT_OPTS="--color=16,border:241,bg:-1,bg+:-1 --cycle"
+export FZF_DEFAULT_OPTS="
+  --color=fg:-1,fg+:$COLOR_DIM_YELLOW,bg:-1,bg+:-1
+  --color=hl:$COLOR_DIM_GREEN,hl+:$COLOR_GREEN,info:$COLOR_DIM_CYAN,marker:$COLOR_DIM_MAGENTA
+  --color=prompt:$COLOR_DIM_GREEN,spinner:$COLOR_RED,pointer:$COLOR_MAGENTA,header:-1
+  --color=gutter:-1,border:$COLOR_DIM_BG
+  --border='rounded' --preview-window='border-rounded'
+  --prompt='> ' --marker='>' --pointer='◆' --separator='─'
+  --scrollbar='│' --cycle"
 
 # Pyenv setup
 if [ -z "$PYENV_INITIALIZED" ] && command -v pyenv >/dev/null 2>&1; then
