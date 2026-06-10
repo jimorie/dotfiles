@@ -311,14 +311,7 @@ function path_insert() {
 }
 
 # FZF setup
-export FZF_DEFAULT_OPTS="
-  --color=fg:-1,fg+:$COLOR_DIM_YELLOW,bg:-1,bg+:-1
-  --color=hl:$COLOR_DIM_GREEN,hl+:$COLOR_GREEN,info:$COLOR_DIM_CYAN,marker:$COLOR_DIM_MAGENTA
-  --color=prompt:$COLOR_DIM_GREEN,spinner:$COLOR_RED,pointer:$COLOR_MAGENTA,header:-1
-  --color=gutter:-1,border:$COLOR_DIM_BG
-  --border='rounded' --preview-window='border-rounded'
-  --prompt='> ' --marker='>' --pointer='◆' --separator='─'
-  --scrollbar='│' --cycle"
+export FZF_DEFAULT_OPTS="--color=fg:-1,fg+:$COLOR_YELLOW,bg:-1,bg+:-1,hl:$COLOR_DIM_GREEN,hl+:$COLOR_GREEN,info:$COLOR_DIM_CYAN,marker:$COLOR_DIM_MAGENTA,prompt:$COLOR_DIM_GREEN,spinner:$COLOR_RED,pointer:$COLOR_MAGENTA,header:-1,border:$COLOR_DIM_BG --border='rounded' --preview-window='border-rounded' --prompt='> ' --marker='>' --pointer='◆' --separator='─' --gutter=' ' --scrollbar='│' --cycle"
 
 # Pyenv setup
 if [ -z "$PYENV_INITIALIZED" ] && command -v pyenv >/dev/null 2>&1; then
@@ -367,7 +360,8 @@ if [[ -d "$HOME/.cargo" && ":$PATH:" != *"/Users/jimorie/.cargo/bin"* ]]; then
 fi
 
 # VCC setup
-alias gr='_sel=( $(git review -l --color=always | sed -e "$ d" | fzf --ansi --no-sort --border-label="Select change to git review -d" --border=top --color=label:red) ) && git review -d ${_sel[0]}'
+alias gr='_sel=( $(git review -l --color=always | sed -e "$ d" | fzf --ansi --no-sort --border-label="Select change to git review -d" --border=top --color=bg+:$COLOR_DIM_BG) ) && git review -d ${_sel[0]}'
+alias grg='_url=$(git config gr.reviewUrl) && _sel=( $(git review -l --color=always | sed -e "$ d" | fzf --ansi --no-sort --border-label="Select change to browse to" --border=top --color=bg+:$COLOR_DIM_BG) ) && open "${_url}/+/${_sel[0]}" 2>/dev/null || (test $? = 1 && echo "No gr.reviewUrl set?")'
 alias livehack='find . -name '\''*.py'\'' -exec mv -v '\''{}c'\'' '\''{}c.orig'\'' \;'
 alias liveunhack='find . -name '\''*.py'\'' -exec mv -v '\''{}c.orig'\'' '\''{}c'\'' \;'
 
