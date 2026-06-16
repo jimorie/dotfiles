@@ -33,6 +33,6 @@
     ui = true
     pager = true
 [gitreview]
-    username = pnystrom
+    username = pnystro4
     remote = origin
     track = true

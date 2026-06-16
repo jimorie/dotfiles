@@ -365,5 +365,12 @@ alias grg='_url=$(git config gr.reviewUrl) && _sel=( $(git review -l --color=alw
 alias livehack='find . -name '\''*.py'\'' -exec mv -v '\''{}c'\'' '\''{}c.orig'\'' \;'
 alias liveunhack='find . -name '\''*.py'\'' -exec mv -v '\''{}c.orig'\'' '\''{}c'\'' \;'
 
+# hatch setup
+if which hatch > /dev/null 2>&1; then
+    function henv () {
+        source `hatch env find $@`/bin/activate 2> /dev/null
+    }
+fi
+
 # TokenUpdater
 path_insert "$HOME/.local/TokenUpdater"
