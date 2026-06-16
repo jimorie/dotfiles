@@ -1,0 +1,13 @@
+ssh -p 934 itahil@CZC048940K.dhcp.nordic.volvocars.net # ITA-HILC1
+ssh -p 934 itahil@CZC10377RT.dhcp.nordic.volvocars.net # ITA-HILC2
+ssh -p 934 itahil@CZC10377S2.dhcp.nordic.volvocars.net # ITA-HILC3
+ssh -p 934 itahil@CZC0537DY6.dhcp.nordic.volvocars.net # ITA-HILC4
+ssh -p 934 itahil@CZC10377S5.dhcp.nordic.volvocars.net # ITA-HILC5
+ssh -p 934 itahil@CZC022CV4X.dhcp.nordic.volvocars.net # ITA-HILC6
+ssh -p 934 itahil@CZC022BSZ5.dhcp.nordic.volvocars.net # ITA-HILC7
+ssh -p 934 itahil@CZC022CV4W.dhcp.nordic.volvocars.net # ITA-HILC8
+ssh -p 934 itahil@CZC8378HR1.dhcp.nordic.volvocars.net # ITA-HILC9
+ssh -p 934 itahil@CZC022BSZ8.dhcp.nordic.volvocars.net # ITA-HILC10
+ssh -p 934 itahil@CZC10377S4.dhcp.nordic.volvocars.net # ITA-HILC11
+ssh -p 934 itahil@CZC022CV4T.dhcp.nordic.volvocars.net # ITA-HILC12
+ssh -p 934 itahil@CZC10377RM.dhcp.nordic.volvocars.net # ITA-HILC13

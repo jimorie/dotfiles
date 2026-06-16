@@ -313,6 +313,9 @@ function path_insert() {
 # FZF setup
 export FZF_DEFAULT_OPTS="--color=fg:-1,fg+:$COLOR_YELLOW,bg:-1,bg+:-1,hl:$COLOR_DIM_GREEN,hl+:$COLOR_GREEN,info:$COLOR_DIM_CYAN,marker:$COLOR_DIM_MAGENTA,prompt:$COLOR_DIM_GREEN,spinner:$COLOR_RED,pointer:$COLOR_MAGENTA,header:-1,border:$COLOR_DIM_BG --border='top' --preview-window='border-rounded' --prompt='> ' --marker='>' --pointer='◆' --separator='─' --gutter=' ' --scrollbar='│' --cycle"
 
+# PIAS -- Play It Again Sam!
+alias pias='eval $(cat ~/.dotfiles/pias/* | fzf --border-label="Select command to eval" --border=top --no-sort)'
+
 # Pyenv setup
 if [ -z "$PYENV_INITIALIZED" ] && command -v pyenv >/dev/null 2>&1; then
   export PYENV_INITIALIZED=1

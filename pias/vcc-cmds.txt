@@ -1,0 +1,4 @@
+vim ~/vcc/Notes.md
+vim ~/.dotfiles/pias/vcc-cmds.txt  # Update VCC pias!
+vim ~/.dotfiles/vcc/hils.txt
+for RIG in $(cat ~/.dotfiles/vcc/hils.txt); do export RIG=$RIG;curl -sk https://conxsir-jenkins.neo.volvocars.net/computer/$RIG/ --user "$USER:$(cat ~/.secrets/vcc-jenkins-api-token)"|grep -o -E -e "Remote: [^,]*" | awk '{print "ssh -p 934 itahil@" $2 "  # " ENVIRON["RIG"]}'; done > ~/.dotfiles/pias/vcc-hils.txt  # Update ssh to HIL cmds!
