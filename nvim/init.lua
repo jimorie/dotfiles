@@ -109,8 +109,8 @@ require('lazy').setup({
         },
         colors = {
           black = '#080808',
-          bg0 = '#1c1c1c',
-          bg1 = '#303030',
+          bg0 = vim.env.COLOR_BG,
+          bg1 = vim.env.COLOR_DIM_BG,
           bg2 = 'NONE',
           bg3 = '#585858',
           bg4 = '#6c6c6c',
@@ -299,7 +299,7 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
-    vim.highlight.on_yank()
+    vim.hl.on_yank()
   end,
   group = highlight_group,
   pattern = '*',
@@ -362,6 +362,9 @@ fzf_lua.setup {
       end,
       ["ctrl-g"] = function(_, opts)
         fzf_lua.live_grep({ regex = opts.last_query })
+      end,
+      ["ctrl-v"] = function(_, opts)
+        fzf_lua.live_grep({ regex = vim.fn.getreg('"+') })
       end,
       ["ctrl-o"] = function()
         fzf_lua.jumps()
