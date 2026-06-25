@@ -363,10 +363,11 @@ if [[ -d "$HOME/.cargo" && ":$PATH:" != *"/Users/jimorie/.cargo/bin"* ]]; then
 fi
 
 # VCC setup
-alias gr='_sel=( $(git review -l --color=always | sed -e "$ d" | fzf --ansi --no-sort --border-label="Select change to git review -d" --border=top --color=bg+:$COLOR_DIM_BG) ) && git review -d ${_sel[0]}'
-alias grg='_url=$(git config gr.reviewUrl) && _sel=( $(git review -l --color=always | sed -e "$ d" | fzf --ansi --no-sort --border-label="Select change to browse to" --border=top --color=bg+:$COLOR_DIM_BG) ) && open "${_url}/+/${_sel[0]}" 2>/dev/null || (test $? = 1 && echo "No gr.reviewUrl set?")'
+alias gr=git-review-picker.sh
 alias livehack='find . -name '\''*.py'\'' -exec mv -v '\''{}c'\'' '\''{}c.orig'\'' \;'
 alias liveunhack='find . -name '\''*.py'\'' -exec mv -v '\''{}c.orig'\'' '\''{}c'\'' \;'
+
+export GERRIT_HTTP=https://gerrit.volvocars.biz
 
 # hatch setup
 if which hatch > /dev/null 2>&1; then
