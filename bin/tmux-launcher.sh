@@ -13,7 +13,7 @@ HEIGHT=15
 
 # FZF command options
 FZF_SCRIPT=~/bin/fzf-tmux
-FZF_COMMAND="$FZF_SCRIPT -p90%,90% --delimiter=: --with-nth=6 --scheme=history --no-hscroll --cycle --color=gutter:$COLOR_BG"
+FZF_COMMAND="$FZF_SCRIPT -p90%,90% --delimiter=: --with-nth=6 --scheme=history --no-hscroll --cycle --color=gutter:$COLOR_BG --border=rounded"
 # If fzf-tmux supports -b:
 # FZF_COMMAND="$FZF_SCRIPT -b$HEIGHT --delimiter=: --with-nth=6 --scheme=history --no-hscroll --cycle --color=16,border:241,bg:-1,bg+:-1"
 
