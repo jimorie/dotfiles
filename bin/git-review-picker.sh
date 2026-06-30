@@ -6,13 +6,13 @@ if [ ! -z $GERRIT_HTTP ]; then
 	test -z $GERRIT_PATH && echo 'Failed to read repo path from git config remote.origin.url!' && exit 2
 	git review -l --color=always \
 		| sed -e "$ d" \
-		| fzf --exact --ansi --border-label='Enter to checkout • Ctrl-O to open in browser' --border=top \
+		| fzf --exact --ansi --border-label='Enter to checkout • Ctrl-O to open in browser' --border=top $FZF_ANSI_OPTS \
 		--bind "enter:become[git review -d {1}]" \
 		--bind "ctrl-o:become[open '$GERRIT_HTTP/c/$GERRIT_PATH/+/{1}' 2>/dev/null]"
 else
 	echo 'Set $GERRIT_HTTP to enable browser shortcuts' 1>&2
 	git review -l --color=always \
 		| sed -e "$ d" \
-		| fzf --exact --ansi --border-label='Enter to checkout' --border=top \
+		| fzf --exact --ansi --border-label='Enter to checkout' --border=top $FZF_ANSI_OPTS \
 		--bind "enter:become[git review -d {1}]"
 fi
