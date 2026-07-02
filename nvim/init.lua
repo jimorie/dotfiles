@@ -187,7 +187,160 @@ require('lazy').setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
     -- or if using mini.icons/mini.nvim
     -- dependencies = { "nvim-mini/mini.icons" },
-    opts = {},
+    -- Lazy-load on the FzfLua command and the pickers we actually map.
+    cmd = "FzfLua",
+    keys = {
+      { "<C-p>", mode = { "n", "v" }, desc = "Fuzzy find buffers and files" },
+      { "<C-t>", mode = { "n", "v" }, desc = "Find project definitions" },
+      { "<C-g>", mode = { "n", "v" }, desc = "Live grep selection or word" },
+    },
+    config = function()
+      local fzf_lua = require "fzf-lua"
+      local fzf_utils = require "fzf-lua.utils"
+
+      local function selection_or_cword(boundary)
+        local selection = fzf_utils.mode_is_visual() and fzf_utils.get_visual_selection() or nil
+
+        if not selection then
+          selection = vim.fn.expand("<cword>")
+          if selection and selection ~= "" and boundary then
+            selection = "\\b" .. selection .. "\\b"
+          end
+        end
+
+        return selection
+      end
+
+      find_project_definitions = function(opts)
+        if vim.fn.executable("ctags") == 0 then
+          vim.notify("ctags executable not found", vim.log.levels.WARN)
+          return
+        end
+
+        if vim.fn.executable("rg") == 0 then
+          vim.notify("rg executable not found", vim.log.levels.WARN)
+          return
+        end
+
+        opts = opts or {}
+        local ctags_cmd = "rg --files --follow -g '*.py' | ctags -L - -f - --fields=+n --extra=+q --sort=no --python-kinds=+cfmv-i 2>/dev/null"
+
+        return fzf_lua.tags(vim.tbl_deep_extend("force", {
+          cwd = vim.uv.cwd(),
+          cmd = ctags_cmd,
+          ctags_autogen = true,
+          -- previewer = "bat",
+          file_icons = false,
+          silent = true,
+          actions = {
+            ["ctrl-g"] = false,
+          },
+        }, opts))
+      end
+
+      fzf_lua.setup {
+        defaults = {
+          git_icons = false,
+          prompt = '❯ ',
+          actions = {
+            ["ctrl-b"] = function(_, opts)
+              fzf_lua.buffers({ query = opts.last_query })
+            end,
+            ["ctrl-f"] = function(_, opts)
+              fzf_lua.files({ query = opts.last_query, cwd_prompt = false })
+            end,
+            ["ctrl-g"] = function(_, opts)
+              fzf_lua.live_grep({ regex = opts.last_query })
+            end,
+            ["ctrl-v"] = function(_, opts)
+              fzf_lua.live_grep({ regex = vim.fn.getreg('"+') })
+            end,
+            ["ctrl-o"] = function()
+              fzf_lua.jumps()
+            end,
+            ["ctrl-t"] = function(_, opts)
+              find_project_definitions({ query = opts.last_query })
+            end,
+          },
+        },
+        fzf_opts = {
+          ['--layout'] = 'default',
+        },
+        winopts = {
+          treesitter = false,
+          -- Disable the dimming backdrop shade to avoid an extra redraw pass.
+          backdrop = 100,
+          preview = {
+            layout = "flex",
+            flip_columns = 200,
+            vertical = "up:66%",
+            -- Native in-process previewer: no per-keystroke process fork (was "bat").
+            default = "builtin",
+            -- Debounce preview updates while scrolling fast (default ~20ms).
+            delay = 100,
+            winopts = { number = false },
+          },
+        },
+        previewers = {
+          builtin = {
+            treesitter = {
+              enabled = false,
+            },
+          },
+        },
+        buffers = {
+          filename_only = false,
+          -- ignore_current_buffer = true,
+          -- No preview for buffers; toggle on demand with the default preview key.
+          winopts = { preview = { hidden = true } },
+        },
+        grep = {
+          follow = true,
+          no_esc = true,
+          actions = {
+            ["ctrl-g"] = false,
+          },
+          fzf_opts = {
+            ["--disabled"] = true,
+          },
+        },
+        tags = {
+          follow = true,
+          actions = {
+            ["ctrl-g"] = false,
+          },
+        },
+        lsp = {
+          workspace_symbols = {
+            actions = {
+              ["ctrl-g"] = false,
+            },
+          },
+        },
+        files = {
+          follow = true,
+          -- formatter = "path.filename_first",
+          -- No preview for files; toggle on demand with the default preview key.
+          winopts = { preview = { hidden = true } },
+        },
+        keymap = {
+          builtin = {
+            ["<C-l>"] = "toggle-preview",
+          },
+          fzf = {
+            ["ctrl-c"] = "abort",
+          },
+        },
+      }
+
+      vim.keymap.set({ "n", "v" }, "<C-p>", fzf_lua.buffers, { desc = 'Fuzzy find buffers and files' })
+      vim.keymap.set({ "n", "v" }, "<C-t>", function()
+        find_project_definitions({ query = selection_or_cword(false) })
+      end, { desc = 'Find project definitions' })
+      vim.keymap.set({ "n", "v" }, "<C-g>", function()
+        fzf_lua.live_grep({ regex = selection_or_cword(true) })
+      end, { desc = 'Live grep selection or word' })
+    end,
   },
 
   {
@@ -304,140 +457,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
-
--- [[ Configure fzf-lua ]]
-local fzf_lua = require "fzf-lua"
-local fzf_utils = require "fzf-lua.utils"
-
-local function selection_or_cword(boundary)
-  local selection = fzf_utils.mode_is_visual() and fzf_utils.get_visual_selection() or nil
-
-  if not selection then
-    selection = vim.fn.expand("<cword>")
-    if selection and selection ~= "" and boundary then
-      selection = "\\b" .. selection .. "\\b"
-    end
-  end
-
-  return selection
-end
-
-find_project_definitions = function(opts)
-  if vim.fn.executable("ctags") == 0 then
-    vim.notify("ctags executable not found", vim.log.levels.WARN)
-    return
-  end
-
-  if vim.fn.executable("rg") == 0 then
-    vim.notify("rg executable not found", vim.log.levels.WARN)
-    return
-  end
-
-  opts = opts or {}
-  local ctags_cmd = "rg --files --follow -g '*.py' | ctags -L - -f - --fields=+n --extra=+q --sort=no --python-kinds=+cfmv-i 2>/dev/null"
-
-  return fzf_lua.tags(vim.tbl_deep_extend("force", {
-    cwd = vim.uv.cwd(),
-    cmd = ctags_cmd,
-    ctags_autogen = true,
-    -- previewer = "bat",
-    file_icons = false,
-    silent = true,
-    actions = {
-      ["ctrl-g"] = false,
-    },
-  }, opts))
-end
-
-fzf_lua.setup {
-  defaults = {
-    git_icons = false,
-    prompt = '❯ ',
-    actions = {
-      ["ctrl-b"] = function(_, opts)
-        fzf_lua.buffers({ query = opts.last_query })
-      end,
-      ["ctrl-f"] = function(_, opts)
-        fzf_lua.files({ query = opts.last_query, cwd_prompt = false })
-      end,
-      ["ctrl-g"] = function(_, opts)
-        fzf_lua.live_grep({ regex = opts.last_query })
-      end,
-      ["ctrl-v"] = function(_, opts)
-        fzf_lua.live_grep({ regex = vim.fn.getreg('"+') })
-      end,
-      ["ctrl-o"] = function()
-        fzf_lua.jumps()
-      end,
-      ["ctrl-t"] = function(_, opts)
-        find_project_definitions({ query = opts.last_query })
-      end,
-    },
-  },
-  fzf_opts = {
-    ['--layout'] = 'default',
-  },
-  winopts = {
-    treesitter = false,
-    preview = {
-      layout = "flex",
-      flip_columns = 200,
-      vertical = "up:66%",
-      default = "bat", -- Requires 'bat' installed on your system
-    },
-  },
-  previewers = {
-    builtin = {
-      treesitter = {
-        enabled = false,
-      },
-    },
-  },
-  buffers = {
-    filename_only = false,
-    -- ignore_current_buffer = true,
-  },
-  grep = {
-    follow = true,
-    no_esc = true,
-    actions = {
-      ["ctrl-g"] = false,
-    },
-    fzf_opts = {
-      ["--disabled"] = true,
-    },
-  },
-  tags = {
-    follow = true,
-    actions = {
-      ["ctrl-g"] = false,
-    },
-  },
-  lsp = {
-    workspace_symbols = {
-      actions = {
-        ["ctrl-g"] = false,
-      },
-    },
-  },
-  files = {
-    follow = true,
-    -- formatter = "path.filename_first",
-  },
-  keymap = {
-    fzf = {
-      ["ctrl-c"] = "abort",
-    },
-  },
-}
-
-vim.keymap.set({"n", "v"}, "<C-p>", fzf_lua.buffers, { desc = 'Fuzzy find buffers and files' })
-vim.keymap.set({"n", "v"}, "<C-t>", function()
-  find_project_definitions({ query = selection_or_cword(false) })
-end, { desc = 'Find project definitions' })
-vim.keymap.set({"n", "v"}, "<C-g>", function()
-  fzf_lua.live_grep({ regex = selection_or_cword(true) })
-end, { desc = 'Live grep selection or word' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
