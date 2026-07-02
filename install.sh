@@ -68,3 +68,5 @@ fi
 # Install to ~/bin
 mkdir -p $dir/bin
 find `pwd`/bin -type f -exec ln -s {} $dir/bin \;
+
+which fdfind>/dev/null && ln -s `which fdfind` $dir/bin/fd
