@@ -246,9 +246,10 @@ require('lazy').setup({
             ["ctrl-b"] = function(_, opts)
               fzf_lua.buffers({ query = opts.last_query })
             end,
-            ["ctrl-f"] = function(_, opts)
-              fzf_lua.files({ query = opts.last_query, cwd_prompt = false })
-            end,
+            -- Disabled: <C-p> now opens the combined buffers+files picker.
+            -- ["ctrl-f"] = function(_, opts)
+            --   fzf_lua.files({ query = opts.last_query, cwd_prompt = false })
+            -- end,
             ["ctrl-g"] = function(_, opts)
               fzf_lua.live_grep({ regex = opts.last_query })
             end,
@@ -291,6 +292,16 @@ require('lazy').setup({
         buffers = {
           filename_only = false,
           -- ignore_current_buffer = true,
+          -- Strip the "[bufnr] <flags>" prefix so buffer rows visually match the
+          -- files picker. Entry fields are separated by U+2002 (nbsp); the path is
+          -- always the last field and the devicon the second-to-last, so:
+          --   --with-nth=-2.. shows only "<icon> <path>" (hides bufnr/flags)
+          --   --nth=-1..      restricts fuzzy matching to the path field
+          fzf_opts = {
+            ["--delimiter"] = "\u{2002}",
+            ["--with-nth"] = "-2..",
+            ["--nth"] = "-1..",
+          },
           -- No preview for buffers; toggle on demand with the default preview key.
           winopts = { preview = { hidden = true } },
         },
@@ -333,7 +344,16 @@ require('lazy').setup({
         },
       }
 
-      vim.keymap.set({ "n", "v" }, "<C-p>", fzf_lua.buffers, { desc = 'Fuzzy find buffers and files' })
+      vim.keymap.set({ "n", "v" }, "<C-p>", function()
+        fzf_lua.combine({
+          pickers = "buffers;files",
+          winopts = {
+            title = " Buffers and files ",
+            title_pos = "center",
+            preview = { hidden = true },
+          },
+        })
+      end, { desc = 'Fuzzy find buffers and files (combined)' })
       vim.keymap.set({ "n", "v" }, "<C-t>", function()
         find_project_definitions({ query = selection_or_cword(false) })
       end, { desc = 'Find project definitions' })
