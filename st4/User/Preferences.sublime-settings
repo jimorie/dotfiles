@@ -7,7 +7,7 @@
 	"caret_extra_top": 2,
 	"caret_extra_width": 1,
 	"caret_style": "phase",
-	"color_scheme": "Sixteen.sublime-color-scheme",
+	"color_scheme": "Monokai.sublime-color-scheme",
 	"drag_text": false,
 	"ensure_newline_at_eof_on_save": true,
 	"file_exclude_patterns": ["._*", "*.pyc", ".DS_Store", ".coverage.*"],
