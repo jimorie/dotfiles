@@ -465,15 +465,15 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- [[ Highlight on yank ]]
--- See `:help vim.highlight.on_yank()`
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+-- Highlight yanked text briefly.
 vim.api.nvim_create_autocmd('TextYankPost', {
+  group = yank_highlight_group,
   callback = function()
-    vim.hl.hl_op()
+    vim.hl.on_yank({
+      higroup = 'Search',
+      timeout = 300,
+    })
   end,
-  group = highlight_group,
-  pattern = '*',
 })
 
 -- [[ Configure Treesitter ]]
