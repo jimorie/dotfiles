@@ -556,6 +556,7 @@ require("nvim-tree").setup({
 vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<cr>', { desc = 'Toggle nvim-tree' })
 
 vim.api.nvim_command('source ~/.config/nvim/keybinds.vim')
+vim.keymap.del('x', 'in')
 
 -- Configure cursorline to only show when focused
 vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained" }, {
