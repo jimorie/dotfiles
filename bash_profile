@@ -379,3 +379,8 @@ fi
 
 # TokenUpdater
 path_insert "$HOME/.local/TokenUpdater"
+
+# Copilot setup
+if which copilot > /dev/null 2>&1; then
+    export COPILOT_ALLOW_ALL=true
+fi
