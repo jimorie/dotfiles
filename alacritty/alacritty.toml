@@ -54,8 +54,10 @@ style = { shape = "Block", blinking = "Always" }
 bindings = [
     # Appears that Super also works for Command on MacOS
     { key = "Enter", mods = "Super", action = "ToggleFullscreen"},
-    { key = "Backspace", mods = "Control", chars = "\u007f"},
-    { key = "Space", mods = "Control", chars = " "},
+    # Send a unique single control byte (Ctrl-_) so tmux can tell this apart
+    # from a plain Backspace
+    { key = "Backspace", mods = "Control", chars = "\u001f"},
+    # { key = "Space", mods = "Control", chars = " "},
     { key = "Backspace", mods = "Shift", chars = "\u0017"},  # Ctrl-W
     { key = "Space", mods = "Shift", chars = "\u001b "},
 ]
