@@ -359,7 +359,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # Rust setup
-if [[ -d "$HOME/.cargo" && ":$PATH:" != *"/Users/jimorie/.cargo/bin"* ]]; then
+if [[ -f "$HOME/.cargo/env" && ":$PATH:" != *"/Users/jimorie/.cargo/bin"* ]]; then
     source "$HOME/.cargo/env"
 fi
 
