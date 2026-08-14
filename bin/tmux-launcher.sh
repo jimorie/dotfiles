@@ -5,6 +5,9 @@ PROJECTS[0]=~/vcc
 PROJECTS[1]=~/projects
 PROJECTS[2]=~
 
+# Specific directories to add
+SPECIFIC[0]="$HOME/.dotfiles"
+
 # Formatting of Tmux windows
 LIST_DATA="#{p-2:window_index}   #{p40:window_name} #{pane_current_path}"
 
@@ -47,6 +50,9 @@ fi
 # Populate project cache
 if [[ ! -f $PROJECT_CACHE || $refresh -gt 0 ]]; then
 	find ${PROJECTS[@]} -mindepth 1 -maxdepth 1 -type d -not -name '.*' | awk '{n=split($0,a,"/");printf "@:%s:%s:@:@:     %-40s %s\n", a[n], $0, a[n], $0}' > $PROJECT_CACHE
+	for dir in $SPECIFIC; do
+		printf "@:%s:%s:@:@:      %-40s %s\n" `basename $dir` "$dir" `basename $dir` "$dir" >> $PROJECT_CACHE
+	done
 fi
 
 # Remember current layout
