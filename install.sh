@@ -70,3 +70,6 @@ mkdir -p $dir/bin
 find `pwd`/bin -type f -exec ln -s {} $dir/bin \;
 
 which fdfind>/dev/null && ln -s `which fdfind` $dir/bin/fd
+
+# Update dunst notification daemon on Linux
+which dunst>/dev/null && mkdir -p ~/.config/dunst && envsubst < `pwd`/dunst/dunstrc.template > ~/.config/dunst/dunstrc && systemctl --user restart dunst
