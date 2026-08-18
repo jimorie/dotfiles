@@ -168,7 +168,7 @@ require('lazy').setup({
         },
         sections = {
           lualine_a = {{ 'mode', separator = { left = '', right = '' }}},
-          lualine_b = {{ 'filename', icons_enabled = true, path = 1, file_status = false, separator = { right = ''}}},
+          lualine_b = {{ 'filename', icons_enabled = true, path = 1, file_status = true, separator = { right = ''}}},
           lualine_c = {},
           lualine_x = {{'%B', padding = 0, fmt = function(s, c) return "0x" .. s end}, 'location'},
           lualine_y = {fileformat, encoding, 'filetype'},
