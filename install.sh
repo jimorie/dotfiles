@@ -73,3 +73,12 @@ which fdfind>/dev/null && ln -s `which fdfind` $dir/bin/fd
 
 # Update dunst notification daemon on Linux
 which dunst>/dev/null && mkdir -p ~/.config/dunst && envsubst < `pwd`/dunst/dunstrc.template > ~/.config/dunst/dunstrc && systemctl --user restart dunst
+
+# Copilot setup
+if which copilot > /dev/null 2>&1; then
+    mkdir -p $dir/.copilot
+    for file in `pwd`/copilot/*; do
+        rm "$dir/.copilot/`basename $file`"
+        ln -s `pwd`/copilot/`basename $file` "$dir/.copilot/`basename $file`"
+    done
+fi
