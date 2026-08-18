@@ -76,9 +76,9 @@ which dunst>/dev/null && mkdir -p ~/.config/dunst && envsubst < `pwd`/dunst/duns
 
 # Copilot setup
 if which copilot > /dev/null 2>&1; then
-    mkdir -p $dir/.copilot
-    for file in `pwd`/copilot/*; do
-        rm "$dir/.copilot/`basename $file`"
-        ln -s `pwd`/copilot/`basename $file` "$dir/.copilot/`basename $file`"
+    for file in `find "$PWD/copilot/" -type f -printf '%P\n'`; do
+        mkdir -p "$dir/.copilot/`dirname $file`"
+        rm -f "$dir/.copilot/$file"
+        ln -s `pwd`/copilot/$file "$dir/.copilot/$file"
     done
 fi

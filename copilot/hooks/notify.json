@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "agentStop": [
+      {
+        "type": "command",
+        "bash": "notify-send 'Copilot CLI' 'Task finished'",
+        "timeoutSec": 5
+      }
+    ]
+  }
+}
