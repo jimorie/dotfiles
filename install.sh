@@ -46,6 +46,10 @@ ln -s `which nvim` $dir/bin/vim
 rm -f $dir/.config/alacritty
 ln -s `pwd`/alacritty $dir/.config/alacritty
 
+mkdir -p $dir/.config/pip
+rm -f $dir/.config/pip/pip.conf
+ln -s `pwd`/pip/pip.conf $dir/.config/pip/pip.conf
+
 if [ ! -f "$dir/.gitconfig" ]; then
     echo "[include]" >> $dir/.gitconfig
     echo "    path = $(pwd)/gitconfig" >> $dir/.gitconfig
