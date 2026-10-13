@@ -51,7 +51,7 @@ fi
 if [[ ! -f $PROJECT_CACHE || $refresh -gt 0 ]]; then
 	find ${PROJECTS[@]} -mindepth 1 -maxdepth 1 -type d -not -name '.*' | awk '{n=split($0,a,"/");printf "@:%s:%s:@:@:     %-40s %s\n", a[n], $0, a[n], $0}' > $PROJECT_CACHE
 	for dir in $SPECIFIC; do
-		printf "@:%s:%s:@:@:      %-40s %s\n" `basename $dir` "$dir" `basename $dir` "$dir" >> $PROJECT_CACHE
+		printf "@:%s:%s:@:@:     %-40s %s\n" `basename $dir` "$dir" `basename $dir` "$dir" >> $PROJECT_CACHE
 	done
 fi
 
