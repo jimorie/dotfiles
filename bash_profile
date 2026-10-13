@@ -246,8 +246,13 @@ function chunky_prompter() {
         prompt="${prompt}\[\033[48;${bg}m\] \[\033[38;${fg}m\]󱔎${venvname}\033[38;${bg}m\]"
     fi
 
+    if [[ $COLUMNS -lt 40 ]]; then
+        prompt="\n${promptchar} "
+    else
+        prompt="${prompt} \[\033[0m\]\[\033[38;${bg}m\] \[\033[0m\]\n${promptchar} "
+    fi
+
     # Make it so!
-    prompt="${prompt} \[\033[0m\]\[\033[38;${bg}m\] \[\033[0m\]\n${promptchar} "
     export PS1=$prompt
 }
 
