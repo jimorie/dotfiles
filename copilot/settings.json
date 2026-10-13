@@ -15,5 +15,29 @@
     "showSchedules": false,
     "showPullRequest": false,
     "showCustom": true
-  }
+  },
+  "ide": {
+    "autoConnect": true
+  },
+  "theme": "high-contrast",
+  "skillDirectories": [
+    "/home/pnystro4/vcc/ConX-SFE-Skills/skills",
+    "/home/pnystro4/vcc/copilot-skills"
+  ],
+  "disabledSkills": [
+    "test-driven-development",
+    "ara-artifactory-credentials",
+    "artinfo-gerrit-code-ownership",
+    "artinfo-gerrit",
+    "citri-test-result-pull",
+    "confluence",
+    "mongodb",
+    "old-gerrit",
+    "repo-tool-workflows",
+    "setup-skills",
+    "improving-conx-sfe-skills",
+    "jenkins",
+    "vira",
+    "victoria"
+  ]
 }
