@@ -1,6 +1,14 @@
 {
   "version": 1,
   "hooks": {
+    "notification": [
+      {
+        "type": "command",
+        "matcher": "elicitation_dialog|permission_prompt",
+        "bash": "notify-send 'Copilot CLI' 'Input required'",
+        "timeoutSec": 5
+      }
+    ],
     "agentStop": [
       {
         "type": "command",
