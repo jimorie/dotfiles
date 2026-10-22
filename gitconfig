@@ -8,6 +8,24 @@
     editor = vim
     autocrlf = input
     eol = lf
+    pager = "sh -c 'cols=${COLUMNS:-$(tput cols 2>/dev/null || printf 0)}; case \"$cols\" in \"\"|*[!0-9]*) cols=0;; esac; if [ \"$cols\" -gt 100 ]; then exec delta -s; else exec delta; fi'"
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    dark = true
+    syntax-theme = TwoDark
+    navigate = true
+    line-numbers = true
+    zero-style = syntax
+    minus-style = "#FF7B72 #3d1f1f"
+    minus-emph-style = "#FFFFFF bold #8e2b2b"
+    plus-style = "#7EE787 #1c3a24"
+    plus-emph-style = "#FFFFFF bold #1f7a3a"
+    file-style = "#79C0FF bold"
+    hunk-header-style = "#56D4DD"
+    line-numbers-zero-style = "#9AA5B1"
+    line-numbers-minus-style = "#FF7B72"
+    line-numbers-plus-style = "#7EE787"
 [alias]
     co = checkout
     cb = checkout -b
