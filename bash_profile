@@ -19,6 +19,8 @@ alias u='cd -'
 
 alias cdcase='cd `realpath .`'
 
+alias setenv='source "$HOME/bin/setenv.sh"'
+
 # Set terminal title based on SSH host
 
 echo -ne "\033[22;0t"                     #Save Title on Stack
