@@ -43,6 +43,7 @@ text = "#080200"
 
 [selection]
 save_to_clipboard = true
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t┃"
 
 [window]
 decorations = "Full"
