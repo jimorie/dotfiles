@@ -124,9 +124,7 @@ require('lazy').setup({
         highlights = {
           ["CursorLine"] = { bg = '#141414' },
           ["CursorLineNr"] = { fg = '$orange' },
-          -- Does not seem to work, but would be nice to have...
-          -- ["NvimTreeOpenedFile"] = { fg = '$orange' },
-          -- ["NvimTreeOpenedHL"] = { fg = '$orange' },
+          ["NvimTreeOpenedHL"] = { fg = '$green' },
         }
       }
       vim.cmd.colorscheme 'onedark'
@@ -461,6 +459,14 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
+-- [[ Configure LSP ]]
+vim.lsp.config('ty', {
+  cmd = { '/home/pnystro4/.local/bin/ty', 'server' },
+  filetypes = { 'python' },
+  root_markers = { 'ty.toml', 'pyproject.toml', '.git' },
+})
+vim.lsp.enable('ty')
+
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
@@ -545,6 +551,7 @@ require("nvim-tree").setup({
   renderer = {
     group_empty = true,
     symlink_destination = false,
+    highlight_opened_files = "name",
   },
   modified = {
     enable = false,
