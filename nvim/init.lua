@@ -191,7 +191,8 @@ require('lazy').setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
     -- or if using mini.icons/mini.nvim
     -- dependencies = { "nvim-mini/mini.icons" },
-    -- Lazy-load on the FzfLua command and the pickers we actually map.
+    -- Register the UI picker after startup, before any picker is invoked.
+    event = "VeryLazy",
     cmd = "FzfLua",
     keys = {
       { "<C-p>", mode = { "n", "v" }, desc = "Fuzzy find buffers and files" },
@@ -573,7 +574,92 @@ require("nvim-tree").setup({
   },
 })
 
-vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<cr>', { desc = 'Toggle nvim-tree' })
+vim.api.nvim_create_autocmd("QuitPre", {
+  group = vim.api.nvim_create_augroup("NvimTreeQuit", { clear = true }),
+  callback = function()
+    if vim.bo.filetype == "NvimTree" or vim.api.nvim_win_get_config(0).relative ~= "" then
+      return
+    end
+
+    local tree_windows = {}
+    local other_windows = 0
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+      if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "NvimTree" then
+        table.insert(tree_windows, win)
+      elseif vim.api.nvim_win_get_config(win).relative == "" then
+        other_windows = other_windows + 1
+      end
+    end
+
+    if other_windows == 1 then
+      for _, win in ipairs(tree_windows) do
+        vim.api.nvim_win_close(win, false)
+      end
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("WinClosed", {
+  group = vim.api.nvim_create_augroup("NvimTreeBufferFocus", { clear = true }),
+  callback = function(event)
+    local win = tonumber(event.match)
+    if win ~= vim.api.nvim_get_current_win()
+      or vim.bo.filetype == "NvimTree"
+      or vim.api.nvim_win_get_config(win).relative ~= "" then
+      return
+    end
+
+    local deleted_buf = vim.api.nvim_win_get_buf(win)
+    local alternate_buf = vim.fn.bufnr("#")
+    local tab = vim.api.nvim_get_current_tabpage()
+
+    -- WinClosed precedes BufDelete; wait until the buffer has been unlisted.
+    vim.schedule(function()
+      if (vim.api.nvim_buf_is_valid(deleted_buf) and vim.bo[deleted_buf].buflisted)
+        or vim.api.nvim_get_current_tabpage() ~= tab
+        or vim.bo.filetype ~= "NvimTree" then
+        return
+      end
+
+      for _, editor_win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+        if vim.bo[vim.api.nvim_win_get_buf(editor_win)].filetype ~= "NvimTree"
+          and vim.api.nvim_win_get_config(editor_win).relative == "" then
+          vim.api.nvim_set_current_win(editor_win)
+          return
+        end
+      end
+
+      local function usable(buf)
+        return buf ~= deleted_buf
+          and vim.api.nvim_buf_is_valid(buf)
+          and vim.bo[buf].buflisted
+          and vim.bo[buf].filetype ~= "NvimTree"
+      end
+
+      local buf = alternate_buf
+      if not usable(buf) then
+        local buffers = vim.fn.getbufinfo({ buflisted = 1 })
+        table.sort(buffers, function(a, b) return a.lastused > b.lastused end)
+        buf = nil
+        for _, info in ipairs(buffers) do
+          if usable(info.bufnr) then
+            buf = info.bufnr
+            break
+          end
+        end
+      end
+
+      vim.api.nvim_open_win(buf or vim.api.nvim_create_buf(true, false), true, {
+        split = "right",
+        win = vim.api.nvim_get_current_win(),
+      })
+    end)
+  end,
+})
+
+vim.keymap.set('n', '<leader>t', function()
+  require("nvim-tree.api").tree.toggle({ focus = false })
+end, { desc = 'Toggle nvim-tree' })
 
 vim.api.nvim_command('source ~/.config/nvim/keybinds.vim')
 vim.keymap.del('x', 'in')
