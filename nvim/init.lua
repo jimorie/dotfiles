@@ -197,6 +197,11 @@ require('lazy').setup({
       { "<C-p>", mode = { "n", "v" }, desc = "Fuzzy find buffers and files" },
       { "<C-t>", mode = { "n", "v" }, desc = "Find project definitions" },
       { "<C-g>", mode = { "n", "v" }, desc = "Live grep selection or word" },
+      { "gra", "<cmd>FzfLua lsp_code_actions<cr>", mode = { "n", "x" }, desc = "LSP code actions" },
+      { "gri", "<cmd>FzfLua lsp_implementations<cr>", desc = "LSP implementations" },
+      { "grr", "<cmd>FzfLua lsp_references<cr>", desc = "LSP references" },
+      { "grt", "<cmd>FzfLua lsp_typedefs<cr>", desc = "LSP type definitions" },
+      { "gO", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "LSP document symbols" },
     },
     config = function()
       local fzf_lua = require "fzf-lua"
@@ -347,6 +352,8 @@ require('lazy').setup({
           },
         },
       }
+
+      fzf_lua.register_ui_select()
 
       vim.keymap.set({ "n", "v" }, "<C-p>", function()
         fzf_lua.combine({
