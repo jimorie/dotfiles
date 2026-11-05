@@ -447,6 +447,9 @@ vim.o.clipboard = 'unnamedplus'
 -- Enable break indent
 vim.o.breakindent = true
 
+vim.opt.foldmethod = 'indent'
+vim.opt.foldlevel = 99
+
 -- Save undo history
 vim.o.undofile = true
 
