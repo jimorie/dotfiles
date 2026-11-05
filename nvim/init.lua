@@ -375,12 +375,12 @@ require('lazy').setup({
     end,
   },
 
-  {
-    -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    lazy = false,
-    build = ':TSUpdate',
-  },
+  -- {
+  --   -- Highlight, edit, and navigate code
+  --   'nvim-treesitter/nvim-treesitter',
+  --   lazy = false,
+  --   build = ':TSUpdate',
+  -- },
 
   {
     'nvim-tree/nvim-tree.lua',
@@ -498,35 +498,35 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
-local treesitter_parsers = {
-  'bash',
-  'c',
-  'cpp',
-  'go',
-  'javascript',
-  'lua',
-  'markdown',
-  'markdown_inline',
-  'python',
-  'rust',
-  'tsx',
-  'typescript',
-  'vim',
-  'vimdoc',
-}
-
-require('nvim-treesitter').setup {
-  install_dir = vim.fn.stdpath 'data' .. '/site',
-}
-
-vim.api.nvim_create_autocmd('FileType', {
-  callback = function(args)
-    local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
-    if lang and vim.tbl_contains(treesitter_parsers, lang) then
-      pcall(vim.treesitter.start, args.buf, lang)
-    end
-  end,
-})
+-- local treesitter_parsers = {
+--   'bash',
+--   'c',
+--   'cpp',
+--   'go',
+--   'javascript',
+--   'lua',
+--   'markdown',
+--   'markdown_inline',
+--   'python',
+--   'rust',
+--   'tsx',
+--   'typescript',
+--   'vim',
+--   'vimdoc',
+-- }
+-- 
+-- require('nvim-treesitter').setup {
+--   install_dir = vim.fn.stdpath 'data' .. '/site',
+-- }
+-- 
+-- vim.api.nvim_create_autocmd('FileType', {
+--   callback = function(args)
+--     local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+--     if lang and vim.tbl_contains(treesitter_parsers, lang) then
+--       pcall(vim.treesitter.start, args.buf, lang)
+--     end
+--   end,
+-- })
 
 -- document existing key chains
 --require('which-key').register {
