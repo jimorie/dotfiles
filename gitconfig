@@ -41,6 +41,7 @@
     pr = "!f() { git --no-pager log --pretty='format:* %s%n%n%b' origin..HEAD|sed 's/^\\([^*]\\)/    \\1/'|pbcopy && pbpaste; }; f"
     tag-for-release = "!f() { git tag -a `date +v%Y.%m.%d` -m `date +v%Y.%m.%d`; }; f"
     ed = "!nvim $(git status --porcelain | grep -E '^.(M|A|U) ' | awk '{ print $2 }')"
+    head = "!nvim $(git diff HEAD HEAD^ --name-status | grep -E '^(M|A)' | awk '{ print $2 }')"
     ll = "!~/bin/git-log.sh"
 [diff]
     algorithm = patience
