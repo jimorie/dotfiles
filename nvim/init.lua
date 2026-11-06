@@ -54,7 +54,7 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>gp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').preview_hunk_inline, { buffer = bufnr, desc = 'Preview git hunk' })
 
         -- don't override the built-in and fugitive keymaps
         local gs = package.loaded.gitsigns
@@ -355,6 +355,47 @@ require('lazy').setup({
       }
 
       fzf_lua.register_ui_select()
+
+      local function select_git_base()
+        local path = vim.bo.buftype == '' and vim.fn.expand('%:p') or ''
+        local cwd = path ~= '' and vim.fn.fnamemodify(path, ':h') or vim.fn.getcwd()
+        local result = vim.system({
+          'git', '-C', cwd, 'log', '--color=always', '--format=%H %C(yellow)%h%C(reset) %C(cyan)%cs%C(reset) %s',
+        }):wait()
+        if result.code ~= 0 then
+          vim.notify('Cannot list base commits: ' .. vim.trim(result.stderr or ''), vim.log.levels.WARN)
+          return
+        end
+
+        local entries = { 'INDEX ' .. fzf_utils.ansi_codes.green('Reset to Git index (default)') }
+        vim.list_extend(entries, vim.split(result.stdout, '\n', { trimempty = true }))
+        fzf_lua.fzf_exec(entries, {
+          prompt = 'Git base> ',
+          previewer = false,
+          fzf_opts = {
+            ['--ansi'] = true,
+            ['--with-nth'] = '2..',
+            ['--no-sort'] = true,
+            ['--no-multi'] = true,
+          },
+          actions = {
+            ['enter'] = function(selected)
+              if not selected or not selected[1] then
+                return
+              end
+              local base = selected[1]:match('^(%S+)')
+              if base == 'INDEX' then
+                require('gitsigns').reset_base(true)
+              else
+                require('gitsigns').change_base(base, true)
+              end
+            end,
+          },
+        })
+      end
+
+      vim.api.nvim_create_user_command('GitBase', select_git_base, { desc = 'Select Gitsigns base for all buffers' })
+      vim.keymap.set('n', '<leader>gl', select_git_base, { desc = 'Select git base commit' })
 
       vim.keymap.set({ "n", "v" }, "<C-p>", function()
         fzf_lua.combine({
