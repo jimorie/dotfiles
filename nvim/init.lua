@@ -197,7 +197,7 @@ require('lazy').setup({
     keys = {
       { "<C-p>", mode = { "n", "v" }, desc = "Fuzzy find buffers and files" },
       { "<C-t>", mode = { "n", "v" }, desc = "Find project definitions" },
-      { "<C-g>", mode = { "n", "v" }, desc = "Live grep selection or word" },
+      { "<C-g>", mode = { "n", "v" }, desc = "Live grep" },
       { "gra", "<cmd>FzfLua lsp_code_actions<cr>", mode = { "n", "x" }, desc = "LSP code actions" },
       { "gri", "<cmd>FzfLua lsp_implementations<cr>", desc = "LSP implementations" },
       { "grr", "<cmd>FzfLua lsp_references<cr>", desc = "LSP references" },
@@ -208,17 +208,8 @@ require('lazy').setup({
       local fzf_lua = require "fzf-lua"
       local fzf_utils = require "fzf-lua.utils"
 
-      local function selection_or_cword(boundary)
-        local selection = fzf_utils.mode_is_visual() and fzf_utils.get_visual_selection() or nil
-
-        if not selection then
-          selection = vim.fn.expand("<cword>")
-          if selection and selection ~= "" and boundary then
-            selection = "\\b" .. selection .. "\\b"
-          end
-        end
-
-        return selection
+      local function visual_selection()
+        return fzf_utils.mode_is_visual() and fzf_utils.get_visual_selection() or nil
       end
 
       find_project_definitions = function(opts)
@@ -276,6 +267,9 @@ require('lazy').setup({
         },
         fzf_opts = {
           ['--layout'] = 'default',
+        },
+        fzf_colors = {
+          ["bg+"] = { "bg", "CursorLine" },
         },
         winopts = {
           treesitter = false,
@@ -446,11 +440,11 @@ require('lazy').setup({
         })
       end, { desc = 'Fuzzy find buffers and files (combined)' })
       vim.keymap.set({ "n", "v" }, "<C-t>", function()
-        find_project_definitions({ query = selection_or_cword(false) })
+        find_project_definitions({ query = visual_selection() })
       end, { desc = 'Find project definitions' })
       vim.keymap.set({ "n", "v" }, "<C-g>", function()
-        fzf_lua.live_grep({ regex = selection_or_cword(true) })
-      end, { desc = 'Live grep selection or word' })
+        fzf_lua.live_grep({ regex = visual_selection() })
+      end, { desc = 'Live grep' })
       vim.keymap.set("n", "gO", document_symbols_from_cursor, { desc = "LSP document symbols" })
     end,
   },
