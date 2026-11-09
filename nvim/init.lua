@@ -458,6 +458,8 @@ require('lazy').setup({
 
   {
     'nvim-tree/nvim-tree.lua',
+    -- Newer revisions require SessionWritePre, missing from this Neovim 0.13 dev build.
+    commit = '7ff7040bf6c246671eb55cb1727de4fd9f92a106',
     dependencies = {
       'nvim-tree/nvim-web-devicons',
     },
