@@ -202,7 +202,7 @@ require('lazy').setup({
       { "gri", "<cmd>FzfLua lsp_implementations<cr>", desc = "LSP implementations" },
       { "grr", "<cmd>FzfLua lsp_references<cr>", desc = "LSP references" },
       { "grt", "<cmd>FzfLua lsp_typedefs<cr>", desc = "LSP type definitions" },
-      { "gO", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "LSP document symbols" },
+      { "gO", desc = "LSP document symbols" },
     },
     config = function()
       local fzf_lua = require "fzf-lua"
@@ -332,6 +332,12 @@ require('lazy').setup({
           },
         },
         lsp = {
+          document_symbols = {
+            locate = true,
+            fzf_opts = {
+              ['--layout'] = 'reverse-list',
+            },
+          },
           workspace_symbols = {
             actions = {
               ["ctrl-g"] = false,
@@ -355,6 +361,38 @@ require('lazy').setup({
       }
 
       fzf_lua.register_ui_select()
+
+      local function document_symbols_from_cursor()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local winid = vim.api.nvim_get_current_win()
+        local view = vim.fn.winsaveview()
+        local results = vim.lsp.buf_request_sync(bufnr, "textDocument/documentSymbol", {
+          textDocument = vim.lsp.util.make_text_document_params(bufnr),
+        }, 1000)
+        local line = 0
+        for client_id, response in pairs(results or {}) do
+          local encoding = vim.lsp.get_client_by_id(client_id).offset_encoding
+          for _, item in ipairs(vim.lsp.util.symbols_to_items(response.result or {}, bufnr, encoding)) do
+            if item.filename == vim.api.nvim_buf_get_name(bufnr) and item.lnum <= view.lnum then
+              line = math.max(line, item.lnum)
+            end
+          end
+        end
+        if line == 0 then
+          return fzf_lua.lsp_document_symbols()
+        end
+
+        -- Let locate capture the preceding symbol's line, then restore the buffer.
+        vim.api.nvim_win_set_cursor(winid, { line, 0 })
+        fzf_utils.clear_CTX()
+        local ok, err = pcall(fzf_lua.lsp_document_symbols)
+        vim.api.nvim_win_call(winid, function()
+          vim.fn.winrestview(view)
+        end)
+        if not ok then
+          error(err)
+        end
+      end
 
       local function select_git_base()
         local path = vim.bo.buftype == '' and vim.fn.expand('%:p') or ''
@@ -413,6 +451,7 @@ require('lazy').setup({
       vim.keymap.set({ "n", "v" }, "<C-g>", function()
         fzf_lua.live_grep({ regex = selection_or_cword(true) })
       end, { desc = 'Live grep selection or word' })
+      vim.keymap.set("n", "gO", document_symbols_from_cursor, { desc = "LSP document symbols" })
     end,
   },
 
