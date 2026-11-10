@@ -523,6 +523,14 @@ vim.o.clipboard = 'unnamedplus'
 -- Enable break indent
 vim.o.breakindent = true
 
+vim.o.smarttab = true
+vim.o.softtabstop = 0
+vim.api.nvim_create_autocmd('FileType', {
+  callback = function()
+    vim.bo.softtabstop = 0
+  end,
+})
+
 vim.opt.foldmethod = 'indent'
 vim.opt.foldlevel = 99
 
