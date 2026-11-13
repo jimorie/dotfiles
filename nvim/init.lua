@@ -208,8 +208,62 @@ require('lazy').setup({
       local fzf_lua = require "fzf-lua"
       local fzf_utils = require "fzf-lua.utils"
 
-      local function visual_selection()
-        return fzf_utils.mode_is_visual() and fzf_utils.get_visual_selection() or nil
+      local function current_selection()
+        if fzf_utils.mode_is_visual() then
+          return (fzf_utils.get_visual_selection())
+        end
+        if vim.fn.mode() == "n" and vim.v.hlsearch == 1 then
+          return vim.fn.getreg("/"), true
+        end
+      end
+
+      local function vim_search_to_regex(search)
+        if not vim.o.magic and search:sub(1, 2) ~= [[\V]] then
+          return nil
+        end
+        local escaped = {
+          ["<"] = [[\b]], [">"] = [[\b]],
+          ["+"] = "+", ["?"] = "?", ["="] = "?",
+          ["|"] = "|", ["("] = "(", [")"] = ")",
+          ["."] = [[\.]], ["*"] = [[\*]], ["["] = [[\[]],
+          ["^"] = [[\^]], ["$"] = [[\$]], ["\\"] = [[\\]], ["/"] = "/",
+        }
+        local parts, i, very_nomagic, multiline = {}, 1, false, false
+        while i <= #search do
+          local char = search:sub(i, i)
+          if char == "\\" then
+            i = i + 1
+            local next_char = search:sub(i, i)
+            if next_char == "V" then
+              very_nomagic = true
+            elseif next_char == "m" then
+              very_nomagic = false
+            elseif next_char == "n" then
+              parts[#parts + 1] = [[\n]]
+              multiline = true
+            else
+              if very_nomagic and (next_char == "." or next_char == "*" or next_char == "["
+                  or next_char == "^" or next_char == "$") then
+                return nil
+              end
+              local replacement = escaped[next_char]
+              if not replacement then return nil end
+              parts[#parts + 1] = replacement
+            end
+          elseif very_nomagic then
+            parts[#parts + 1] = fzf_utils.rg_escape(char)
+          elseif char == "[" or char == "~"
+              or char == "^" and i ~= 1
+              or char == "$" and i ~= #search then
+            return nil
+          elseif char == "." or char == "*" or char == "^" or char == "$" then
+            parts[#parts + 1] = char
+          else
+            parts[#parts + 1] = fzf_utils.rg_escape(char)
+          end
+          i = i + 1
+        end
+        return table.concat(parts), multiline
       end
 
       find_project_definitions = function(opts)
@@ -440,10 +494,34 @@ require('lazy').setup({
         })
       end, { desc = 'Fuzzy find buffers and files (combined)' })
       vim.keymap.set({ "n", "v" }, "<C-t>", function()
-        find_project_definitions({ query = visual_selection() })
+        local selection = current_selection()
+        find_project_definitions({
+          query = selection,
+          fzf_opts = selection and selection ~= "" and { ["--no-extended"] = true } or nil,
+        })
       end, { desc = 'Find project definitions' })
       vim.keymap.set({ "n", "v" }, "<C-g>", function()
-        fzf_lua.live_grep({ regex = visual_selection() })
+        local selection, is_search = current_selection()
+        if is_search and selection ~= "" then
+          local regex, multiline = vim_search_to_regex(selection)
+          if not regex or multiline and vim.fn.executable("rg") == 0 then
+            vim.notify("Cannot translate the current Vim search to a ripgrep regex", vim.log.levels.WARN)
+            regex = nil
+          end
+          fzf_lua.live_grep({
+            regex = regex,
+            rg_glob = false,
+            rg_opts = regex and multiline and "--multiline " .. require("fzf-lua.config").globals.grep.rg_opts or nil,
+          })
+          return
+        end
+        local opts = { regex = selection }
+        if selection and selection ~= "" then
+          opts.rg_opts = "--fixed-strings " .. require("fzf-lua.config").globals.grep.rg_opts
+          opts.grep_opts = "--fixed-strings --binary-files=without-match --line-number --recursive --color=always -e"
+          --  opts.rg_glob = false
+        end
+        fzf_lua.live_grep(opts)
       end, { desc = 'Live grep' })
       vim.keymap.set("n", "gO", document_symbols_from_cursor, { desc = "LSP document symbols" })
     end,
