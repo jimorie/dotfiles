@@ -43,7 +43,7 @@ text = "#080200"
 
 [selection]
 save_to_clipboard = true
-semantic_escape_chars = ",│`|:\"' ()[]{}<>\t┃"
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t\u00a0┃"
 
 [window]
 decorations = "Full"
@@ -61,4 +61,9 @@ bindings = [
     # { key = "Space", mods = "Control", chars = " "},
     { key = "Backspace", mods = "Shift", chars = "\u0017"},  # Ctrl-W
     { key = "Space", mods = "Shift", chars = "\u001b "},
+]
+
+[mouse]
+bindings = [
+    { mouse = "Right", mods = "Shift", action = "Paste" },
 ]
